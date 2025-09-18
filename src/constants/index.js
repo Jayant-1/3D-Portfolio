@@ -88,9 +88,10 @@ const achievements = [
     icon: cp,
     iconBg: "#383E56",
     date: "Apr 2025",
-    points: ["IT Specialist - HTML and CSS"],
+    points: ["IT Specialist - HTML and CSS", "IT Specialist - Databases"],
     credential: [
       "https://www.credly.com/badges/c59ff7d1-7af2-4dcb-8c57-d2bd6a6d1f44/linked_in_profile",
+      "https://www.credly.com/badges/61128af2-38bc-4299-b862-157ba2ca2edb/linked_in_profile",
     ],
   },
   {
@@ -99,12 +100,8 @@ const achievements = [
     icon: coursera,
     iconBg: "#0056d2",
     date: "Jul 2025",
-    points: [
-      "IBM Full Stack Software Developer",
-    ],
-    credential: [
-      "https://coursera.org/verify/professional-cert/8R7RY7URFI6O",
-    ],
+    points: ["IBM Full Stack Software Developer"],
+    credential: ["https://coursera.org/verify/professional-cert/8R7RY7URFI6O"],
   },
 ];
 
