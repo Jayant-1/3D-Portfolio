@@ -13,6 +13,8 @@ import cp from "./achievement/Certiport.jpg";
 import fcc from "./achievement/free_code_camp.jpg";
 
 import novalearn from "./project/novalearn.png";
+import malariadetectionsystem from "./project/malariadetectionsystem.png";
+import astroPixel from "./project/astroPixel.png";
 import ponggame from "./project/ponggame.png";
 import portfolio from "./project/portfolio.png";
 
@@ -22,6 +24,8 @@ import designs from "./badge/designs.svg";
 import ideas from "./badge/ideas.svg";
 
 export {
+  malariadetectionsystem,
+  astroPixel,
   ponggame,
   portfolio,
   logo,

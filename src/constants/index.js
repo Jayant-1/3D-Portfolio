@@ -1,4 +1,5 @@
-import {
+import {malariadetectionsystem,
+  astroPixel,
   novalearn,
   ponggame,
   portfolio,
@@ -134,6 +135,60 @@ const testimonials = [
 
 const projects = [
   {
+    name: "AstroPixel",
+    description:
+      "AstroPixel is a FastAPI + React platform for exploring NASA gigapixel imagery with buttery-smooth deep zoom, annotations, and secure user/admin workflows. It ingests GeoTIFF/PSB files, generates tile pyramids with GDAL, and serves them through an optimized viewer.",
+    tags: [
+      {
+        name: "FastAPI",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "GDAL",
+        color: "green-text-gradient",
+      },
+      {
+        name: "OpenSeadragon",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "Cloudflare R2",
+        color: "violet-text-gradient",
+      },
+      {
+        name: "PostgreSQL",
+        color: "orange-text-gradient",
+      },
+    ],
+    image: astroPixel,
+    source_code_link: "https://github.com/Jayant-1/AstroPixel",
+  },
+  {
+    name: "Malaria Detection System",
+    description:
+      "AI-powered malaria detection system for hospitals with patient management, PDF report generation, and real-time analytics. Built with React, Supabase & FastAPI.",
+    tags: [
+      {
+        name: "React",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "Supabase",
+        color: "green-text-gradient",
+      },
+      {
+        name: "FastAPI",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "Keras",
+        color: "violet-text-gradient",
+      },
+    ],
+    image: malariadetectionsystem,
+    source_code_link: "https://github.com/Jayant-1/MalariaDetectionSystem",
+  },
+  {
     name: "Nova-Learn",
     description:
       "NovaLearn is an AI-powered platform that creates personalized learning paths with interactive content and quizzes. Designed with a futuristic 3D UI, it makes learning immersive, efficient, and goal-driven. 🚀",
@@ -160,7 +215,7 @@ const projects = [
       },
     ],
     image: novalearn,
-    source_code_link: "https://nova-learn-jayant.vercel.app/",
+    source_code_link: "https://github.com/Jayant-1/Nova-Learn",
   },
   {
     name: "Multiplayer Pong Game",
@@ -210,7 +265,7 @@ const projects = [
       },
     ],
     image: portfolio,
-    source_code_link: "https://jayantpotdar.vercel.app/",
+    source_code_link: "https://github.com/Jayant-1/3D-Portfolio",
   },
 ];
 
