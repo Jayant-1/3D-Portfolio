@@ -31,9 +31,9 @@ const App = () => {
           </div>
           <StarsCanvas />
           <About />
+          <Works />
           <Achievement />
           <SkillKeyboard />
-          <Works />
           <Feedbacks />
           <div className="relative z-0">
             <Contact />

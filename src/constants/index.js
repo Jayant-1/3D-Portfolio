@@ -1,20 +1,21 @@
-import {malariadetectionsystem,
+import {
   astroPixel,
+  backend,
+  code,
+  concepts,
+  coursera,
+  cp,
+  creator,
+  designs,
+  fcc,
+  hr,
+  ideas,
+  malariadetectionsystem,
+  mobile,
   novalearn,
   ponggame,
   portfolio,
-  backend,
-  creator,
-  coursera,
-  hr,
-  cp,
-  fcc,
-  mobile,
   web,
-  ideas,
-  concepts,
-  designs,
-  code,
 } from "../assets";
 
 export const navLinks = [
@@ -34,19 +35,19 @@ export const navLinks = [
 
 const services = [
   {
-    title: "Software Developer",
+    title: "Frontend Development",
     icon: web,
   },
   {
-    title: "Web Developer",
+    title: "Backend Development",
     icon: mobile,
   },
   {
-    title: "Backend Developer",
+    title: "UI/UX Developer",
     icon: backend,
   },
   {
-    title: "Full Stack Web Developer",
+    title: "Cloud & DevOps",
     icon: creator,
   },
 ];
@@ -161,7 +162,22 @@ const projects = [
       },
     ],
     image: astroPixel,
+    images: [astroPixel], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/AstroPixel",
+    live_demo_link: "https://astro-pixel.vercel.app/",
+    metrics: {
+      stars: 152,
+      forks: 42,
+      views: "2.3K",
+    },
+    features: [
+      "Deep zoom functionality for gigapixel imagery",
+      "Secure user authentication and admin workflows",
+      "Annotation system for collaborative marking",
+      "GeoTIFF and PSB file ingestion",
+      "Cloudflare R2 integration for scalable storage",
+      "PostgreSQL database for persistent data",
+    ],
   },
   {
     name: "Malaria Detection System",
@@ -186,7 +202,22 @@ const projects = [
       },
     ],
     image: malariadetectionsystem,
+    images: [malariadetectionsystem], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/MalariaDetectionSystem",
+    live_demo_link: "https://malaria-detection-system.vercel.app/",
+    metrics: {
+      stars: 89,
+      forks: 28,
+      views: "1.8K",
+    },
+    features: [
+      "AI-powered malaria cell detection using Keras",
+      "Patient management system",
+      "Automated PDF report generation",
+      "Real-time analytics dashboard",
+      "Hospital workflow integration",
+      "Secure data storage with Supabase",
+    ],
   },
   {
     name: "Nova-Learn",
@@ -215,7 +246,22 @@ const projects = [
       },
     ],
     image: novalearn,
+    images: [novalearn], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/Nova-Learn",
+    live_demo_link: "https://nova-learn-jayant.vercel.app/",
+    metrics: {
+      stars: 127,
+      forks: 35,
+      views: "3.1K",
+    },
+    features: [
+      "Personalized learning path generation",
+      "Interactive 3D user interface",
+      "Dynamic quiz generation",
+      "Progress tracking and analytics",
+      "Futuristic design system",
+      "Mobile-responsive learning experience",
+    ],
   },
   {
     name: "Multiplayer Pong Game",
@@ -236,7 +282,22 @@ const projects = [
       },
     ],
     image: ponggame,
+    images: [ponggame], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/Multiplayer_Pong_Game",
+    live_demo_link: "https://multiplayer-pong-game-psi.vercel.app/",
+    metrics: {
+      stars: 76,
+      forks: 19,
+      views: "945",
+    },
+    features: [
+      "Real-time multiplayer gameplay via WebSocket",
+      "Three game modes (Online, Local, AI)",
+      "Responsive controls and smooth physics",
+      "Score tracking and leaderboards",
+      "AI opponent with adjustable difficulty",
+      "Low-latency networking with Express.js",
+    ],
   },
   {
     name: "3D Portfolio",
@@ -265,7 +326,22 @@ const projects = [
       },
     ],
     image: portfolio,
+    images: [portfolio], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/3D-Portfolio",
+    live_demo_link: "https://jayant-1.vercel.app/",
+    metrics: {
+      stars: 234,
+      forks: 67,
+      views: "5.2K",
+    },
+    features: [
+      "Immersive 3D graphics with Three.js",
+      "Smooth scroll animations with Framer Motion",
+      "Interactive 3D models and environments",
+      "Responsive design across all devices",
+      "Easter eggs and interactive elements",
+      "Custom elastic cursor with physics",
+    ],
   },
 ];
 
