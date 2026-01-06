@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import { useCursorState } from "../reactbits/context/ReactBitsCursorProvider";
-import { cn } from "../utils/cn";
 import { useMouse } from "../utils/useMouse";
 
 // Gsap Ticker Function
@@ -155,11 +154,7 @@ function ElasticCursor() {
       <div
         ref={jellyRef}
         id={"jelly-id"}
-        className={cn(
-          `w-[${CURSOR_DIAMETER}px] h-[${CURSOR_DIAMETER}px] border-2 border-black dark:border-white`,
-          "jelly-blob fixed left-0 top-0 rounded-lg z-[999] pointer-events-none will-change-transform",
-          "translate-x-[-50%] translate-y-[-50%]"
-        )}
+        className="jelly-blob fixed left-0 top-0 rounded-lg z-[999] pointer-events-none will-change-transform translate-x-[-50%] translate-y-[-50%]"
         style={{
           width: CURSOR_DIAMETER,
           height: CURSOR_DIAMETER,

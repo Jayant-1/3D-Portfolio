@@ -8,7 +8,6 @@ export { default as usePointerIntent } from "./hooks/usePointerIntent";
 export { default as usePreloaderBypass } from "./hooks/usePreloaderBypass";
 export { default as useSectionObserver } from "./hooks/useSectionObserver";
 export { default as useSoundCue } from "./hooks/useSoundCue";
-export { default as useTypewriter } from "./hooks/useTypewriter";
 
 // ReactBits Context Providers
 export {
