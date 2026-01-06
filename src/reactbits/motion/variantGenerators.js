@@ -19,7 +19,7 @@ export const createFadeIn = (
   direction = "",
   type = "tween",
   delay = 0,
-  duration = 0.75,
+  duration = 0.45,
   isMobile = false
 ) => {
   if (prefersReducedMotion) {
@@ -29,7 +29,8 @@ export const createFadeIn = (
     };
   }
 
-  const distance = isMobile ? 50 : 100;
+  const distance = isMobile ? 18 : 32;
+  const ease = [0.2, 0.7, 0.2, 1];
 
   return {
     hidden: {
@@ -45,8 +46,8 @@ export const createFadeIn = (
       transition: {
         type,
         delay,
-        duration: isMobile ? duration * 0.8 : duration,
-        ease: "easeOut",
+        duration: isMobile ? duration * 0.85 : duration,
+        ease,
       },
     },
   };
@@ -63,28 +64,27 @@ export const createCardHover = (isMobile = false, depth = 1) => {
     };
   }
 
-  const liftDistance = -6 * depth;
-  const shadowIntensity = 0.5 * depth;
+  const liftDistance = -4 * depth;
 
   return {
     rest: {
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.4,
+        duration: 0.32,
         type: "spring",
-        stiffness: 350,
-        damping: 28,
+        stiffness: 260,
+        damping: 26,
       },
     },
     hover: {
       y: liftDistance,
-      scale: 1 + 0.01 * depth,
+      scale: 1 + 0.008 * depth,
       transition: {
-        duration: 0.4,
+        duration: 0.28,
         type: "spring",
-        stiffness: 350,
-        damping: 28,
+        stiffness: 260,
+        damping: 26,
       },
     },
   };
@@ -103,8 +103,8 @@ export const createButtonPress = (isMobile = false) => {
 
   return {
     rest: { scale: 1 },
-    hover: { scale: isMobile ? 1 : 1.05 },
-    tap: { scale: 0.95 },
+    hover: { scale: isMobile ? 1 : 1.03 },
+    tap: { scale: 0.97 },
   };
 };
 
@@ -121,8 +121,8 @@ export const createMagneticEffect = (
     scale: 1 - pressDepth * 0.05,
     transition: {
       type: "spring",
-      stiffness: 300,
-      damping: 20,
+      stiffness: 260,
+      damping: 18,
     },
   };
 };
@@ -153,7 +153,7 @@ export const createSlideIn = (
   direction = "left",
   type = "tween",
   delay = 0,
-  duration = 1,
+  duration = 0.55,
   isMobile = false
 ) => {
   if (prefersReducedMotion) {
@@ -174,8 +174,8 @@ export const createSlideIn = (
       transition: {
         type,
         delay,
-        duration: isMobile ? duration * 0.8 : duration,
-        ease: "easeOut",
+        duration: isMobile ? duration * 0.85 : duration,
+        ease: [0.2, 0.7, 0.2, 1],
       },
     },
   };
@@ -194,7 +194,7 @@ export const createTextVariant = (delay = 0, isMobile = false) => {
 
   return {
     hidden: {
-      y: isMobile ? -30 : -50,
+      y: isMobile ? -14 : -22,
       opacity: 0,
     },
     show: {
@@ -202,8 +202,9 @@ export const createTextVariant = (delay = 0, isMobile = false) => {
       opacity: 1,
       transition: {
         type: "spring",
-        duration: isMobile ? 1 : 1.25,
+        duration: isMobile ? 0.65 : 0.8,
         delay,
+        damping: 20,
       },
     },
   };

@@ -62,6 +62,11 @@ const ProjectModal = ({
     }
   };
 
+  const handleWheel = (e) => {
+    // Prevent scroll propagation to background
+    e.stopPropagation();
+  };
+
   const images = project.images || [project.image];
   const currentImage = images[currentImageIndex] || project.image;
 
@@ -74,20 +79,26 @@ const ProjectModal = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           onClick={handleBackdropClick}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-hidden"
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: previewReady ? 10 : 20 }}
+            initial={{ scale: 0.94, opacity: 0, y: previewReady ? 6 : 12 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            exit={{ scale: 0.94, opacity: 0, y: 12 }}
             transition={{
-              duration: previewReady ? 0.25 : 0.3,
+              duration: previewReady ? 0.2 : 0.24,
               type: "spring",
-              damping: 25,
+              damping: 26,
             }}
-            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[82vh] overflow-y-auto shadow-2xl top-8 hide-scroll border border-white/10"
+            style={{
+              boxShadow:
+                "0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(139, 92, 246, 0.08)",
+            }}
             onClick={(e) => e.stopPropagation()}
+            onWheel={handleWheel}
           >
+            <style>{`.hide-scroll::-webkit-scrollbar{display:none;} .hide-scroll{scrollbar-width:none; -ms-overflow-style:none; overscroll-behavior: contain;}`}</style>
             {/* Close Button */}
             <button
               onClick={onClose}
@@ -222,79 +233,65 @@ const ProjectModal = ({
                 {project.name}
               </motion.h2>
 
-              {/* Metrics Row (if available) */}
-              {(project.metrics ||
-                project.github_stars ||
-                project.forks ||
-                project.views) && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 }}
-                  className="flex flex-wrap gap-4 mb-6 pb-4 border-b border-white/10"
-                >
-                  {(project.metrics?.stars || project.github_stars) && (
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-5 h-5 text-yellow-400"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      <span className="text-white font-semibold">
-                        {project.metrics?.stars || project.github_stars}
-                      </span>
-                    </div>
-                  )}
-                  {(project.metrics?.forks || project.forks) && (
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-5 h-5 text-green-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 5a2 2 0 012-2h4a2 2 0 012 2m-2-9v2m-6 0v2m4-2v2"
-                        />
-                      </svg>
-                      <span className="text-white font-semibold">
-                        {project.metrics?.forks || project.forks}
-                      </span>
-                    </div>
-                  )}
-                  {(project.metrics?.views || project.views) && (
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-5 h-5 text-purple-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                        />
-                      </svg>
-                      <span className="text-white font-semibold">
-                        {project.metrics?.views || project.views}
-                      </span>
-                    </div>
-                  )}
-                </motion.div>
-              )}
+              {/* Metrics Row - Always Show */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="flex flex-wrap gap-6 mb-6 pb-4 border-b border-white/10"
+              >
+                {/* Stars - Apple SF Symbol Style */}
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="w-6 h-6 text-amber-400"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                  <span className="text-white font-semibold text-sm tracking-tight">
+                    {project.metrics?.stars ?? 0}
+                  </span>
+                </div>
+                {/* Forks - Apple SF Symbol Style (Code Branch) */}
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="w-6 h-6 text-emerald-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="6" y1="3" x2="6" y2="15" />
+                    <circle cx="18" cy="6" r="3" />
+                    <circle cx="6" cy="18" r="3" />
+                    <path d="M18 9a9 9 0 01-9 9" />
+                  </svg>
+                  <span className="text-white font-semibold text-sm tracking-tight">
+                    {project.metrics?.forks ?? 0}
+                  </span>
+                </div>
+                {/* Views - Apple SF Symbol Style (Eye) */}
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="w-6 h-6 text-violet-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <span className="text-white font-semibold text-sm tracking-tight">
+                    {project.metrics?.views ?? 0}
+                  </span>
+                </div>
+              </motion.div>
 
               {/* Description */}
               <motion.div
@@ -415,19 +412,19 @@ const ProjectModal = ({
                     <svg
                       className="w-5 h-5"
                       fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      viewBox="0 0 24 24"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
                     >
-                      <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      <path d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
+                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z" />
+                      <path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z" />
+                      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
                     </svg>
                     Live Demo
                   </button>
                 )}
-
                 {/* Source Code Button */}
                 <button
                   onClick={() =>

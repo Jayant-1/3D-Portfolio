@@ -43,7 +43,7 @@ const services = [
     icon: mobile,
   },
   {
-    title: "UI/UX Developer",
+    title: "Database Management",
     icon: backend,
   },
   {

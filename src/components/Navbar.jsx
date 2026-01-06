@@ -12,6 +12,11 @@ const NAV_LINKS = [
     img: "/assets/nav-link-previews/about.png",
   },
   {
+    title: "project",
+    href: "#projects",
+    img: "/assets/nav-link-previews/projects.png",
+  },
+  {
     title: "achievements",
     href: "#achievements",
     img: "/assets/nav-link-previews/achievements.png",
@@ -20,11 +25,6 @@ const NAV_LINKS = [
     title: "skills",
     href: "#skills",
     img: "/assets/nav-link-previews/skills.png",
-  },
-  {
-    title: "project",
-    href: "#projects",
-    img: "/assets/nav-link-previews/projects.png",
   },
   {
     title: "testimonials",

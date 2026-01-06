@@ -32,7 +32,7 @@ function useInstance(value = {}) {
 
 function getScale(diffX, diffY) {
   const distance = Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
-  return Math.min(distance / 735, 0.35);
+  return Math.min(distance / 1200, 0.18);
 }
 
 function getAngle(diffX, diffY) {
@@ -81,10 +81,10 @@ function ElasticCursor() {
     if (!isHovering) {
       set.x(pos.x);
       set.y(pos.y);
-      set.width(50 + scale * 300);
+      set.width(CURSOR_DIAMETER + scale * 180);
       set.r(rotation);
-      set.sx(1 + scale);
-      set.sy(1 - scale * 2);
+      set.sx(1 + scale * 0.8);
+      set.sy(1 - scale * 1.2);
     } else {
       set.r(0);
     }
@@ -110,13 +110,13 @@ function ElasticCursor() {
           duration: 0,
         });
         gsap.to(jellyRef.current, {
-          width: el.offsetWidth + 20,
-          height: el.offsetHeight + 20,
+          width: el.offsetWidth + 12,
+          height: el.offsetHeight + 12,
           x: rect.left + rect.width / 2,
           y: rect.top + rect.height / 2,
           borderRadius: 10,
-          duration: 1.5,
-          ease: "elastic.out(1, 0.3)",
+          duration: 0.9,
+          ease: "elastic.out(1, 0.4)",
         });
       } else {
         gsap.to(jellyRef.current, {
@@ -133,8 +133,8 @@ function ElasticCursor() {
       gsap.to(pos, {
         x: x,
         y: y,
-        duration: 1.5,
-        ease: "elastic.out(1, 0.5)",
+        duration: 0.9,
+        ease: "power3.out",
         onUpdate: () => {
           vel.x = (x - pos.x) * 1.2;
           vel.y = (y - pos.y) * 1.2;

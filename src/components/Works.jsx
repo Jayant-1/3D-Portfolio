@@ -19,11 +19,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
   });
 
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { style: parallaxStyle } = useParallax({
-    strength: 0.02,
-    maxOffset: 10,
-    enabled: !isMobile,
-  });
+  const { style: parallaxStyle } = useParallax({ enabled: !isMobile });
 
   return (
     <motion.div
@@ -33,16 +29,16 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
       <motion.div
         {...handlers}
         animate={{
-          y: previewReady ? -8 - hoverDepth * 4 : 0,
-          scale: 1 + hoverDepth * 0.01,
+          y: previewReady ? -6 - hoverDepth * 6 : 0,
+          scale: 1 + hoverDepth * 0.012,
         }}
         transition={{
-          duration: 0.4,
+          duration: 0.28,
           type: "spring",
-          stiffness: 350,
-          damping: 28,
+          stiffness: 230,
+          damping: 24,
         }}
-        className="relative h-[320px] rounded-xl overflow-hidden cursor-pointer group bg-[#0a0e17] border border-white/[0.06] hover:border-white/[0.15] transition-all duration-500 shadow-[0_4px_20px_rgb(0,0,0,0.3)] hover:shadow-[0_16px_40px_rgb(0,0,0,0.5)]"
+        className="relative h-[320px] rounded-xl overflow-hidden cursor-pointer group bg-[#0a0e17] border border-white/[0.06] hover:border-white/[0.14] transition-all duration-400 shadow-[0_6px_24px_rgb(0,0,0,0.25)] hover:shadow-[0_12px_30px_rgb(0,0,0,0.4)]"
         onClick={() => onOpenModal(previewReady)}
       >
         {/* Subtle Top Accent Line */}
@@ -83,7 +79,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
           <motion.img
             src={image}
             alt={name}
-            className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-108"
+            className="w-full h-full object-cover transition-all duration-500 ease-out group-hover:scale-[1.02]"
             style={{
               filter: "brightness(0.88) saturate(1.05) contrast(1.02)",
               ...parallaxStyle,
@@ -138,7 +134,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
 
         {/* Premium Hover Glow - Subtle */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/8 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-72 h-72 bg-blue-500/8 rounded-full blur-3xl"></div>
         </div>
       </motion.div>
     </motion.div>

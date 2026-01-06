@@ -1,18 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import usePointerIntent from "./usePointerIntent";
 
 const useParallax = ({
-  strength = 0.05,
-  maxOffset = 20,
-  smoothing = 0.15,
+  strength = 0.015,
+  maxOffset = 10,
+  smoothing = 0.12,
   enabled = true,
+  disableOnMobile = true,
 } = {}) => {
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 768px)").matches;
+  }, []);
+
   const { velocity } = usePointerIntent();
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [targetOffset, setTargetOffset] = useState({ x: 0, y: 0 });
 
+  const isEnabled =
+    enabled && !(disableOnMobile && isMobile) && !prefersReducedMotion;
+
   useEffect(() => {
-    if (!enabled) {
+    if (!isEnabled) {
       setOffset({ x: 0, y: 0 });
       setTargetOffset({ x: 0, y: 0 });
       return;
@@ -24,28 +36,30 @@ const useParallax = ({
     const targetY = clamp(velocity.y * strength * 100, -maxOffset, maxOffset);
 
     setTargetOffset({ x: targetX, y: targetY });
-  }, [velocity, strength, maxOffset, enabled]);
+  }, [isEnabled, maxOffset, strength, velocity]);
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!isEnabled) return;
 
     // Smooth lerp animation
+    let rafId;
     const animate = () => {
       setOffset((current) => ({
         x: current.x + (targetOffset.x - current.x) * smoothing,
         y: current.y + (targetOffset.y - current.y) * smoothing,
       }));
+      rafId = requestAnimationFrame(animate);
     };
 
-    const rafId = requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafId);
-  }, [targetOffset, smoothing, enabled]);
+  }, [isEnabled, smoothing, targetOffset]);
 
   return {
     offset,
     style: {
       transform: `translate(${offset.x}px, ${offset.y}px)`,
-      transition: "transform 0.1s ease-out",
+      transition: "transform 0.08s ease-out",
     },
   };
 };

@@ -28,7 +28,7 @@ const App = () => {
               style={{ backgroundColor: "hsl(222.2 84% 4.9%)" }}
             >
               <ElasticCursor />
-              {/* <EasterEggs /> */}
+              <EasterEggs />
               <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
                 <Navbar />
                 <Hero />
