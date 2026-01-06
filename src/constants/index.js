@@ -220,6 +220,50 @@ const projects = [
     ],
   },
   {
+    name: "3D Portfolio",
+    description:
+      "A dynamic React JS portfolio with immersive 3D graphics and smooth animations for an engaging user experience. Includes interactive sections like About, Education, Projects, Connect, and Contact. 🎨💻",
+    tags: [
+      {
+        name: "react",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "tailwind",
+        color: "green-text-gradient",
+      },
+      {
+        name: "framer-motion",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "three.js",
+        color: "orange-text-gradient",
+      },
+      {
+        name: "spline",
+        color: "violet-text-gradient",
+      },
+    ],
+    image: portfolio,
+    images: [portfolio], // Multiple screenshot support
+    source_code_link: "https://github.com/Jayant-1/3D-Portfolio",
+    live_demo_link: "https://jayant-1.vercel.app/",
+    metrics: {
+      stars: 234,
+      forks: 67,
+      views: "5.2K",
+    },
+    features: [
+      "Immersive 3D graphics with Three.js",
+      "Smooth scroll animations with Framer Motion",
+      "Interactive 3D models and environments",
+      "Responsive design across all devices",
+      "Easter eggs and interactive elements",
+      "Custom elastic cursor with physics",
+    ],
+  },
+  {
     name: "Nova-Learn",
     description:
       "NovaLearn is an AI-powered platform that creates personalized learning paths with interactive content and quizzes. Designed with a futuristic 3D UI, it makes learning immersive, efficient, and goal-driven. 🚀",
@@ -297,50 +341,6 @@ const projects = [
       "Score tracking and leaderboards",
       "AI opponent with adjustable difficulty",
       "Low-latency networking with Express.js",
-    ],
-  },
-  {
-    name: "3D Portfolio",
-    description:
-      "A dynamic React JS portfolio with immersive 3D graphics and smooth animations for an engaging user experience. Includes interactive sections like About, Education, Projects, Connect, and Contact. 🎨💻",
-    tags: [
-      {
-        name: "react",
-        color: "blue-text-gradient",
-      },
-      {
-        name: "tailwind",
-        color: "green-text-gradient",
-      },
-      {
-        name: "framer-motion",
-        color: "pink-text-gradient",
-      },
-      {
-        name: "three.js",
-        color: "orange-text-gradient",
-      },
-      {
-        name: "spline",
-        color: "violet-text-gradient",
-      },
-    ],
-    image: portfolio,
-    images: [portfolio], // Multiple screenshot support
-    source_code_link: "https://github.com/Jayant-1/3D-Portfolio",
-    live_demo_link: "https://jayant-1.vercel.app/",
-    metrics: {
-      stars: 234,
-      forks: 67,
-      views: "5.2K",
-    },
-    features: [
-      "Immersive 3D graphics with Three.js",
-      "Smooth scroll animations with Framer Motion",
-      "Interactive 3D models and environments",
-      "Responsive design across all devices",
-      "Easter eggs and interactive elements",
-      "Custom elastic cursor with physics",
     ],
   },
 ];
