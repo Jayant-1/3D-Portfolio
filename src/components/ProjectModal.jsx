@@ -466,11 +466,6 @@ const ProjectModal = ({
                     </kbd>{" "}
                     Images
                   </div>
-                  <div>
-                    <span className="text-blue-400">
-                      💡 Tip: Use arrow keys!
-                    </span>
-                  </div>
                 </div>
               </motion.div>
             </div>
