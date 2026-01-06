@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
+import useParallax from "../reactbits/hooks/useParallax";
 import { styles } from "../styles";
+import useMediaQuery from "../utils/useMediaQuery";
 import { ComputersCanvas } from "./canvas";
-import { useState, useEffect } from "react";
 
 const Hero = () => {
   const [typedText, setTypedText] = useState("");
@@ -10,6 +12,13 @@ const Hero = () => {
   const [itemIndex, setItemIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
+
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const { style: parallaxStyle } = useParallax({
+    strength: 0.03,
+    maxOffset: 15,
+    enabled: !isMobile,
+  });
 
   useEffect(() => {
     const typeItem = () => {
@@ -31,9 +40,8 @@ const Hero = () => {
 
     return () => clearInterval(typingInterval);
   }, [charIndex, itemIndex]);
-
   return (
-    <section className={`relative w-full h-screen mx-auto`} id="hero" >
+    <section className={`relative w-full h-screen mx-auto`} id="hero">
       <div
         className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
       >
@@ -42,7 +50,7 @@ const Hero = () => {
           <div className="w-1 sm:h-80 h-40 violet-gradient" />
         </div>
 
-        <div>
+        <div style={parallaxStyle}>
           <h1 className={`${styles.heroHeadText} text-white`}>
             Hi, I'm <span className="text-[#915EFF]">Jayant Potdar</span>
           </h1>
@@ -52,21 +60,19 @@ const Hero = () => {
               className="typed"
               aria-hidden="true"
               style={{
-                backgroundImage: "linear-gradient(to bottom, rgba(245, 202, 153, 0.5), rgba(245, 202, 153, 0.5))",
+                backgroundImage:
+                  "linear-gradient(to bottom, rgba(245, 202, 153, 0.5), rgba(245, 202, 153, 0.5))",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "100% 8px",
                 backgroundPosition: "0 100%",
                 color: "#915EFF",
                 display: "inline-block",
-                fontWeight: "bold"
+                fontWeight: "bold",
               }}
             >
               {typedText}
             </span>
-            <span 
-              className="typed-cursor" 
-              aria-hidden="true"
-            >
+            <span className="typed-cursor" aria-hidden="true">
               |
             </span>
             <br />

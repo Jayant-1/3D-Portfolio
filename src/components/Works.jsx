@@ -5,18 +5,37 @@ import { Tilt } from "react-tilt";
 import { github } from "../assets";
 import { projects, words } from "../constants";
 import { SectionWrapper } from "../hoc";
+import useCardIntent from "../reactbits/hooks/useCardIntent";
+import useParallax from "../reactbits/hooks/useParallax";
 import { styles } from "../styles";
 import { fadeIn, textVariant } from "../utils/motion";
+import useMediaQuery from "../utils/useMediaQuery";
 import ProjectModal from "./ProjectModal";
 
 const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
+  const { hoverDepth, previewReady, handlers } = useCardIntent({
+    id: `project-${index}`,
+    hoverDelay: 200,
+  });
+
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const { style: parallaxStyle } = useParallax({
+    strength: 0.02,
+    maxOffset: 10,
+    enabled: !isMobile,
+  });
+
   return (
     <motion.div
       variants={fadeIn("up", "spring", index * 0.5, 0.75)}
       className="w-full lg:w-[calc(50%-20px)]"
     >
       <motion.div
-        whileHover={{ y: -6 }}
+        {...handlers}
+        animate={{
+          y: previewReady ? -8 - hoverDepth * 4 : 0,
+          scale: 1 + hoverDepth * 0.01,
+        }}
         transition={{
           duration: 0.4,
           type: "spring",
@@ -24,7 +43,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
           damping: 28,
         }}
         className="relative h-[320px] rounded-xl overflow-hidden cursor-pointer group bg-[#0a0e17] border border-white/[0.06] hover:border-white/[0.15] transition-all duration-500 shadow-[0_4px_20px_rgb(0,0,0,0.3)] hover:shadow-[0_16px_40px_rgb(0,0,0,0.5)]"
-        onClick={onOpenModal}
+        onClick={() => onOpenModal(previewReady)}
       >
         {/* Subtle Top Accent Line */}
         <div className="absolute top-0 left-0 right-0 h-px bg-white/8 group-hover:bg-blue-500/40 transition-all duration-500"></div>
@@ -67,6 +86,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
             className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-108"
             style={{
               filter: "brightness(0.88) saturate(1.05) contrast(1.02)",
+              ...parallaxStyle,
             }}
           />
 
@@ -129,11 +149,13 @@ const Works = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(-1);
+  const [modalPreviewReady, setModalPreviewReady] = useState(false);
 
-  const handleOpenModal = (project) => {
+  const handleOpenModal = (project, previewReady = false) => {
     const index = projects.findIndex((p) => p.name === project.name);
     setCurrentProjectIndex(index);
     setSelectedProject(project);
+    setModalPreviewReady(previewReady);
     setIsModalOpen(true);
   };
 
@@ -142,6 +164,7 @@ const Works = () => {
     setTimeout(() => {
       setSelectedProject(null);
       setCurrentProjectIndex(-1);
+      setModalPreviewReady(false);
     }, 300); // Clear after animation
   };
 
@@ -202,7 +225,9 @@ const Works = () => {
               key={`project-${index}`}
               index={index}
               {...project}
-              onOpenModal={() => handleOpenModal(project)}
+              onOpenModal={(previewReady) =>
+                handleOpenModal(project, previewReady)
+              }
             />
           ))}
         </div>
@@ -216,6 +241,7 @@ const Works = () => {
         projects={projects}
         currentIndex={currentProjectIndex}
         onNavigate={handleNavigateProject}
+        previewReady={modalPreviewReady}
       />
     </>
   );

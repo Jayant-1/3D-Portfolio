@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useCursorState } from "../reactbits/context/ReactBitsCursorProvider";
 import { cn } from "../utils/cn";
 import { useMouse } from "../utils/useMouse";
 
@@ -59,6 +60,7 @@ function ElasticCursor() {
   const jellyRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const { x, y } = useMouse();
+  const { intent, setTargetBounds, setHoverTarget } = useCursorState();
   const pos = useInstance(() => ({ x: 0, y: 0 }));
   const vel = useInstance(() => ({ x: 0, y: 0 }));
   const set = useInstance();
@@ -101,6 +103,8 @@ function ElasticCursor() {
       if (hoverElemRect) {
         const rect = el.getBoundingClientRect();
         setIsHovering(true);
+        setTargetBounds(rect);
+        setHoverTarget(el);
         gsap.to(jellyRef.current, {
           rotate: 0,
           duration: 0,
@@ -121,6 +125,8 @@ function ElasticCursor() {
           height: CURSOR_DIAMETER,
         });
         setIsHovering(false);
+        setTargetBounds(null);
+        setHoverTarget(null);
       }
       const x = e.clientX;
       const y = e.clientY;
@@ -180,4 +186,3 @@ function ElasticCursor() {
 }
 
 export default ElasticCursor;
- 

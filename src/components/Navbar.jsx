@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { logo } from "../assets";
+import useNavPeek from "../reactbits/hooks/useNavPeek";
 
 const NAV_LINKS = [
   { title: "home", href: "#hero", img: "/assets/nav-link-previews/home.png" },
@@ -88,9 +89,17 @@ function getChars(word) {
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const [hovering, setHovering] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const {
+    hoverIndex,
+    activeIndex,
+    isHovering,
+    preview,
+    focusedIndex,
+    handleEnter,
+    handleLeave,
+    handleClick,
+  } = useNavPeek(NAV_LINKS);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -215,28 +224,29 @@ const Navbar = () => {
                     className="group cursor-pointer rounded-lg px-3 py-2 text-5xl md:text-7xl font-extrabold uppercase transition-all duration-200 whitespace-nowrap text-left relative"
                     style={{ minHeight: "4.5rem" }}
                     onMouseOver={() => {
-                      setSelectedIdx(idx);
-                      setHovering(true);
+                      handleEnter(idx);
                     }}
-                    onMouseLeave={() => setHovering(false)}
+                    onMouseLeave={handleLeave}
                     onClick={() => {
                       setIsActive(false);
-                      setHovering(false);
+                      handleClick(idx);
                     }}
                   >
                     <motion.p
                       variants={blur}
                       animate={
-                        hovering && selectedIdx !== idx ? "open" : "closed"
+                        isHovering && focusedIndex !== idx ? "open" : "closed"
                       }
                       style={{
                         display: "inline-block",
                         margin: 0,
                         color:
-                          selectedIdx === idx && hovering ? "#fff" : "#8eadff",
+                          focusedIndex === idx && isHovering
+                            ? "#fff"
+                            : "#8eadff",
                         transition: "color 0.3s, text-shadow 0.3s",
                         textShadow:
-                          selectedIdx === idx && hovering
+                          focusedIndex === idx && isHovering
                             ? "0 0 10px #fff, 0 0 100px #121212"
                             : "none",
                       }}
@@ -248,11 +258,13 @@ const Navbar = () => {
                       className="absolute left-0 bottom-0 h-[4px] rounded origin-left"
                       style={{
                         background:
-                          selectedIdx === idx && hovering ? "#fff" : "#8eadff",
+                          focusedIndex === idx && isHovering
+                            ? "#fff"
+                            : "#8eadff",
                       }}
                       initial={{ width: 0, opacity: 0 }}
                       animate={
-                        selectedIdx === idx && hovering
+                        focusedIndex === idx && isHovering
                           ? { width: "100%", opacity: 1 }
                           : { width: 0, opacity: 0 }
                       }
@@ -265,13 +277,16 @@ const Navbar = () => {
                 <motion.div
                   variants={opacity}
                   initial="initial"
-                  animate={hovering ? "open" : "closed"}
+                  animate={isHovering ? "open" : "closed"}
                   className="hidden md:flex items-center justify-start w-1/3 h-full"
                   style={{ minHeight: 200 }}
                 >
                   <img
-                    src={NAV_LINKS[selectedIdx].img}
-                    alt={NAV_LINKS[selectedIdx].title}
+                    src={preview || NAV_LINKS[activeIndex].img}
+                    alt={
+                      NAV_LINKS[focusedIndex]?.title ||
+                      NAV_LINKS[activeIndex].title
+                    }
                     className="object-cover rounded-lg shadow-lg border border-white/20"
                     style={{
                       width: "480px",

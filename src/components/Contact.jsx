@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import React, { useRef, useState } from "react";
 
 import { SectionWrapper } from "../hoc";
+import useMagnetic from "../reactbits/hooks/useMagnetic";
+import useSoundCue from "../reactbits/hooks/useSoundCue";
 import { styles } from "../styles";
 import { slideIn } from "../utils/motion";
-import soundEffects from "../utils/soundEffects";
 import { EarthCanvas } from "./canvas";
 import Toast from "./ui/toast";
 
@@ -23,6 +24,11 @@ const Contact = () => {
     message: "",
     type: "success",
   });
+  const { play } = useSoundCue("notification");
+  const { ref: submitButtonRef, style: magneticStyle } = useMagnetic({
+    radius: 90,
+    strength: 0.35,
+  });
 
   const handleChange = (e) => {
     const { target } = e;
@@ -38,7 +44,7 @@ const Contact = () => {
     e.preventDefault();
     // Validate form fields
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      soundEffects.playNotification();
+      play("notification");
       setToast({
         open: true,
         message: "Please fill in all fields before submitting.",
@@ -55,7 +61,7 @@ const Contact = () => {
 
     if (!serviceId || !templateId || !publicKey) {
       setLoading(false);
-      soundEffects.playNotification();
+      play("error");
       setToast({
         open: true,
         message:
@@ -81,7 +87,7 @@ const Contact = () => {
       .then(
         () => {
           setLoading(false);
-          soundEffects.playNotification();
+          play("success");
           setToast({
             open: true,
             message: "Thank you. I will get back to you as soon as possible.",
@@ -96,7 +102,7 @@ const Contact = () => {
         (error) => {
           setLoading(false);
           console.error(error);
-          soundEffects.playNotification();
+          play("error");
           setToast({
             open: true,
             message: "Ahh, something went wrong. Please try again.",
@@ -180,7 +186,9 @@ const Contact = () => {
               </label>
 
               <button
+                ref={submitButtonRef}
                 type="submit"
+                style={magneticStyle}
                 className="bg-[#07080d] py-3 px-6 sm:px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary text-sm sm:text-base hover:bg-[#0a0b12] transition-colors duration-200"
               >
                 {loading ? "Sending..." : "Send"}

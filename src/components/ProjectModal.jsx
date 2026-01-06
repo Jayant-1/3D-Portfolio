@@ -9,6 +9,7 @@ const ProjectModal = ({
   projects = [],
   currentIndex = -1,
   onNavigate,
+  previewReady = false,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -76,10 +77,14 @@ const ProjectModal = ({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            initial={{ scale: 0.9, opacity: 0, y: previewReady ? 10 : 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, type: "spring", damping: 25 }}
+            transition={{
+              duration: previewReady ? 0.25 : 0.3,
+              type: "spring",
+              damping: 25,
+            }}
             className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >

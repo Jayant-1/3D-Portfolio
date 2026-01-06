@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { Tilt } from "react-tilt";
 import { RiBriefcase4Fill } from "react-icons/ri";
+import { Tilt } from "react-tilt";
 import { services } from "../constants";
 import { SectionWrapper } from "../hoc";
+import useMagnetic from "../reactbits/hooks/useMagnetic";
 import { styles } from "../styles";
 import { fadeIn, textVariant } from "../utils/motion";
 
@@ -36,6 +37,11 @@ const ServiceCard = ({ index, title, icon }) => (
 );
 
 const About = () => {
+  const { ref: resumeButtonRef, style: magneticStyle } = useMagnetic({
+    radius: 100,
+    strength: 0.3,
+  });
+
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -54,6 +60,8 @@ const About = () => {
         together to bring our ideas to life!
       </motion.p>
       <button
+        ref={resumeButtonRef}
+        style={magneticStyle}
         className="mt-10 px-6 py-3 text-white bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-md shadow-md hover:bg-gradient-to-r hover:from-cyan-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
         onClick={() =>
           window.open(

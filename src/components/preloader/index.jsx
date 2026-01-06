@@ -2,6 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 
+import usePreloaderBypass from "../../reactbits/hooks/usePreloaderBypass";
 import Loader from "./loader";
 
 const PreloaderContext = createContext();
@@ -35,6 +36,14 @@ function Preloader({ children, disabled = false }) {
 
   const loadingPercentRef = useRef({ value: 0 });
 
+  usePreloaderBypass({
+    onBypass: bypassLoading,
+    keys: ["any"],
+    clickEnabled: false,
+    touchEnabled: false,
+    disabled: disabled || !isLoading,
+  });
+
   useEffect(() => {
     if (disabled) {
       setIsLoading(false);
@@ -52,17 +61,7 @@ function Preloader({ children, disabled = false }) {
         setIsLoading(false);
       },
     });
-
-    // Add keyboard shortcut to bypass loading
-    const handleKeyPress = () => {
-      if (isLoading) {
-        bypassLoading();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [disabled, isLoading]);
+  }, [disabled]);
 
   return (
     <PreloaderContext.Provider
