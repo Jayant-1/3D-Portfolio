@@ -7,7 +7,7 @@ import { staggerContainer } from "../utils/motion";
 
 const StarWrapper = (Component, idName) =>
   function HOC() {
-    const { ref, amount, inView } = useSectionObserver({ threshold: 0.35 });
+    const { ref, amount, inView } = useSectionObserver({ threshold: 0.22 });
     const { delayChildren, staggerChildren } = useEntryTiming({
       groupId: "sections",
       stagger: 0.08,
