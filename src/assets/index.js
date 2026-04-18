@@ -15,6 +15,7 @@ import fcc from "./achievement/free_code_camp.jpg";
 import novalearn from "./project/novalearn.png";
 import malariadetectionsystem from "./project/malariadetectionsystem.png";
 import astroPixel from "./project/astroPixel.png";
+import krypton from "./project/Krypton.png";
 import ponggame from "./project/ponggame.png";
 import portfolio from "./project/portfolio.png";
 
@@ -45,4 +46,5 @@ export {
   concepts,
   designs,
   code,
+  krypton,
 };

@@ -1,6 +1,7 @@
 import {
   astroPixel,
   backend,
+  krypton,
   code,
   concepts,
   coursera,
@@ -135,6 +136,50 @@ const testimonials = [
 ];
 
 const projects = [
+  {
+    name: "Krypton",
+    description:
+      "Krypton is an AI-powered research assistant that searches arXiv and OpenAlex, ranks papers by relevance, recency, and citations, and helps users understand literature faster with Gemini-generated summaries, structured insights, research-gap analysis, and personalized topic recommendations in a FastAPI + React app.",
+    tags: [
+      {
+        name: "react",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "arxiv",
+        color: "green-text-gradient",
+      },
+      {
+        name: "fastapi",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "openalex",
+        color: "violet-text-gradient",
+      },
+      {
+        name: "jwt-authentication",
+        color: "orange-text-gradient",
+      },
+    ],
+    image: krypton,
+    images: [krypton], // Multiple screenshot support
+    source_code_link: "https://github.com/Jayant-1/Krypton",
+    live_demo_link: "https://krypton-kohl.vercel.app/",
+    metrics: {
+      stars: 152,
+      forks: 42,
+      views: "2.3K",
+    },
+    features: [
+      "Multi-source paper search across arXiv and OpenAlex in one query flow.",
+      "Intelligent ranking using relevance (TF-IDF), recency, and citation-based scoring.",
+      "AI-generated paper understanding with plain-English summaries and key contributions.",
+      "Structured insight extraction for each paper: problem, method, result, and limitation.",
+      "Research gap analysis that finds open questions and thematic opportunity clusters.",
+      "Personalized research experience with user profiles, topic recommendations, and goal-aware suggestions.",
+    ],
+  },
   {
     name: "AstroPixel",
     description:
