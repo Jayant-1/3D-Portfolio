@@ -1,6 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { github } from "../assets";
+
+const getProjectImages = (project) => {
+  if (!project) return [];
+  if (Array.isArray(project.images) && project.images.length > 0) {
+    return project.images;
+  }
+  return project.image ? [project.image] : [];
+};
 
 const ProjectModal = ({
   project,
@@ -12,45 +20,79 @@ const ProjectModal = ({
   previewReady = false,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const projectKey = project?.name ?? "";
+  const images = useMemo(() => getProjectImages(project), [project]);
+  const safeImageIndex =
+    images.length > 0 ? Math.min(currentImageIndex, images.length - 1) : 0;
+
+  // Reset image index when project changes
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [projectKey]);
+
+  useEffect(() => {
+    if (currentImageIndex !== safeImageIndex) {
+      setCurrentImageIndex(safeImageIndex);
+    }
+  }, [currentImageIndex, safeImageIndex]);
+
+  const navigateToProject = useCallback(
+    (newIndex) => {
+      if (!onNavigate || newIndex < 0 || newIndex >= projects.length) return;
+      setCurrentImageIndex(0);
+      onNavigate(newIndex);
+    },
+    [onNavigate, projects.length]
+  );
 
   // Keyboard navigation - Hook must be called before any conditional returns
   useEffect(() => {
     if (!isOpen || !project) return;
 
+    // Disable body scroll when modal is open to prevent background scrolling
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = "hidden";
+
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         onClose();
-      } else if (e.key === "ArrowLeft") {
-        if (onNavigate && currentIndex > 0) {
-          onNavigate(currentIndex - 1);
-          setCurrentImageIndex(0);
-        }
+        return;
+      }
+
+      // Prevent default scrolling for arrow keys
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+        e.preventDefault();
+      }
+
+      const imagesCount = images.length || 1;
+
+      if (e.key === "ArrowLeft") {
+        navigateToProject(currentIndex - 1);
       } else if (e.key === "ArrowRight") {
-        if (onNavigate && currentIndex < projects.length - 1) {
-          onNavigate(currentIndex + 1);
-          setCurrentImageIndex(0);
-        }
+        navigateToProject(currentIndex + 1);
       } else if (e.key === "ArrowUp") {
         setCurrentImageIndex((prev) =>
-          prev > 0 ? prev - 1 : (project?.images?.length || 1) - 1
+          prev > 0 ? prev - 1 : imagesCount - 1
         );
       } else if (e.key === "ArrowDown") {
         setCurrentImageIndex((prev) =>
-          prev < (project?.images?.length || 1) - 1 ? prev + 1 : 0
+          prev < imagesCount - 1 ? prev + 1 : 0
         );
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalStyle;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [
     isOpen,
     onClose,
-    onNavigate,
+    navigateToProject,
     currentIndex,
     project,
-    project?.images?.length,
-    projects.length,
+    images.length,
   ]);
 
   // Early return after all hooks
@@ -67,8 +109,17 @@ const ProjectModal = ({
     e.stopPropagation();
   };
 
-  const images = project.images || [project.image];
-  const currentImage = images[currentImageIndex] || project.image;
+  const currentImage = images[safeImageIndex] || project.image;
+
+  const nextImage = (e) => {
+    if (e) e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+  };
+
+  const prevImage = (e) => {
+    if (e) e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+  };
 
   return (
     <AnimatePresence>
@@ -90,7 +141,7 @@ const ProjectModal = ({
               type: "spring",
               damping: 26,
             }}
-            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[82vh] overflow-y-auto shadow-2xl top-8 hide-scroll border border-white/10"
+            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl top-12 hide-scroll border border-white/10"
             style={{
               boxShadow:
                 "0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(139, 92, 246, 0.08)",
@@ -102,7 +153,7 @@ const ProjectModal = ({
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md transition-all duration-200 group"
+              className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all duration-200 group border border-white/10"
               aria-label="Close modal"
               title="Press ESC to close"
             >
@@ -119,23 +170,20 @@ const ProjectModal = ({
               </svg>
             </button>
 
-            {/* Navigation Arrows (Left/Right for projects) */}
-            {projects.length > 1 && currentIndex >= 0 && (
+            {/* Navigation Arrows (For projects) */}
+            {projects.length > 1 && (
               <>
                 <button
                   onClick={() => {
-                    if (onNavigate && currentIndex > 0) {
-                      onNavigate(currentIndex - 1);
-                      setCurrentImageIndex(0);
-                    }
+                    navigateToProject(currentIndex - 1);
                   }}
                   disabled={currentIndex === 0}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
+                  className="fixed left-2 md:left-10 lg:left-72 top-1/2 -translate-y-1/2 z-[60] w-12 h-12 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all duration-200 disabled:opacity-0 disabled:cursor-not-allowed group border border-white/10"
                   aria-label="Previous project"
                   title="← Previous project"
                 >
                   <svg
-                    className="w-6 h-6 text-white group-hover:-translate-x-1 transition-transform duration-200"
+                    className="w-8 h-8 text-white group-hover:-translate-x-1 transition-transform duration-200"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -150,18 +198,15 @@ const ProjectModal = ({
                 </button>
                 <button
                   onClick={() => {
-                    if (onNavigate && currentIndex < projects.length - 1) {
-                      onNavigate(currentIndex + 1);
-                      setCurrentImageIndex(0);
-                    }
+                    navigateToProject(currentIndex + 1);
                   }}
                   disabled={currentIndex === projects.length - 1}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
+                  className="fixed right-2 md:right-10 lg:right-72 top-1/2 -translate-y-1/2 z-[60] w-12 h-12 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all duration-200 disabled:opacity-0 disabled:cursor-not-allowed group border border-white/10"
                   aria-label="Next project"
                   title="→ Next project"
                 >
                   <svg
-                    className="w-6 h-6 text-white group-hover:translate-x-1 transition-transform duration-200"
+                    className="w-8 h-8 text-white group-hover:translate-x-1 transition-transform duration-200"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -178,44 +223,81 @@ const ProjectModal = ({
             )}
 
             {/* Project Image Carousel */}
-            <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden rounded-t-3xl">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={currentImageIndex}
-                  src={currentImage}
-                  alt={`${project.name} ${currentImageIndex + 1}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="w-full h-full object-cover"
-                />
-              </AnimatePresence>
+            <div
+              key={projectKey}
+              className="relative w-full h-[350px] md:h-[450px] overflow-hidden rounded-t-3xl group/carousel bg-[#0d1120]"
+            >
+              <motion.img
+                key={`${projectKey}-${safeImageIndex}-${currentImage}`}
+                src={currentImage}
+                alt={`${project.name} ${safeImageIndex + 1}`}
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.28 }}
+                className="w-full h-full object-contain md:object-cover"
+              />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1f35] via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1f35] via-[#1a1f35]/20 to-transparent opacity-90 pointer-events-none"></div>
 
               {/* Image Carousel Controls (if multiple images) */}
               {images.length > 1 && (
                 <>
-                  {/* Carousel Indicators */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                    {images.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentImageIndex(idx)}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          idx === currentImageIndex
-                            ? "w-8 bg-blue-500"
-                            : "w-2 bg-white/30 hover:bg-white/50"
-                        }`}
-                        aria-label={`Go to image ${idx + 1}`}
-                      />
-                    ))}
+                  {/* Image Navigation Arrows */}
+                  <div className="absolute inset-y-0 left-0 flex items-center px-2 md:px-4 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 z-10">
+                    <button
+                      onClick={prevImage}
+                      className="w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/80 backdrop-blur-md rounded-full text-white transition-all duration-200 hover:scale-110 border border-white/10"
+                      aria-label="Previous image"
+                    >
+                      <svg className="w-6 h-6 pr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 md:px-4 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 z-10">
+                    <button
+                      onClick={nextImage}
+                      className="w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/80 backdrop-blur-md rounded-full text-white transition-all duration-200 hover:scale-110 border border-white/10"
+                      aria-label="Next image"
+                    >
+                      <svg className="w-6 h-6 pl-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Thumbnail Strip */}
+                  <div className="absolute bottom-6 left-0 w-full px-4 flex justify-center z-10">
+                    <div className="flex gap-2 sm:gap-3 p-2 bg-black/50 backdrop-blur-md rounded-2xl overflow-x-auto hide-scroll max-w-[95%] sm:max-w-[85%] border border-white/10 shadow-xl">
+                      {images.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex(idx);
+                          }}
+                          className={`relative w-14 h-10 sm:w-20 sm:h-14 flex-shrink-0 rounded-xl overflow-hidden transition-all duration-300 ${
+                            idx === safeImageIndex
+                              ? "ring-2 ring-blue-500 scale-105 opacity-100 z-10 shadow-lg"
+                              : "opacity-40 hover:opacity-100 hover:scale-105"
+                          }`}
+                        >
+                          <img
+                            src={img}
+                            alt={`Thumbnail ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Image Counter */}
-                  <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-white text-sm font-medium">
-                    {currentImageIndex + 1} / {images.length}
+                  <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full text-white text-xs sm:text-sm font-semibold border border-white/10 shadow-lg z-10 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    {safeImageIndex + 1} / {images.length}
                   </div>
                 </>
               )}

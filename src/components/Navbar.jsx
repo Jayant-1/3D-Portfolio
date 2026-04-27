@@ -1,40 +1,49 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { logo } from "../assets";
+import {
+  about,
+  achievements,
+  project,
+  portfolio,
+  skills,
+  testimonials,
+  contact,
+  logo,
+} from "../assets";
 import useNavPeek from "../reactbits/hooks/useNavPeek";
 
 const NAV_LINKS = [
-  { title: "home", href: "#hero", img: "/assets/nav-link-previews/home.png" },
+  { title: "home", href: "#hero", img: portfolio },
   {
     title: "about",
     href: "#about",
-    img: "/assets/nav-link-previews/about.png",
+    img: about,
   },
   {
     title: "project",
     href: "#projects",
-    img: "/assets/nav-link-previews/projects.png",
+    img: project,
   },
   {
     title: "achievements",
     href: "#achievements",
-    img: "/assets/nav-link-previews/achievements.png",
+    img: achievements,
   },
   {
     title: "skills",
     href: "#skills",
-    img: "/assets/nav-link-previews/skills.png",
+    img: skills,
   },
   {
     title: "testimonials",
     href: "#testimonials",
-    img: "/assets/nav-link-previews/testimonials.png",
+    img: testimonials,
   },
   {
     title: "contact",
     href: "#contact",
-    img: "/assets/nav-link-previews/contact.png",
+    img: contact,
   },
 ];
 

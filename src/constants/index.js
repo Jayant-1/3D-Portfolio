@@ -1,7 +1,18 @@
 import {
+  neuralnet,
+  neuralnet1,
+  neuralnet2,
+  neuralnet3,
+  neuralnet4,
   astroPixel,
   backend,
   krypton,
+  krypton1,
+  krypton2,
+  krypton3,
+  krypton4,
+  krypton5,
+  krypton6,
   code,
   concepts,
   coursera,
@@ -17,6 +28,16 @@ import {
   ponggame,
   portfolio,
   web,
+  astroPixel1,
+  astroPixel2,
+  astroPixel3,
+  malariadetectionsystem1,
+  malariadetectionsystem2,
+  contact,
+  skills,
+  about,
+  novalearn1,
+  novalearn2,
 } from "../assets";
 
 export const navLinks = [
@@ -137,6 +158,54 @@ const testimonials = [
 
 const projects = [
   {
+    name: "NeuralNet",
+    description:
+      "NeuralNet is a full-stack visual deep learning studio where you design neural networks with drag-and-drop nodes, compile to Keras, train with real TensorFlow metrics, and deploy secure prediction APIs.",
+    tags: [
+      {
+        name: "react",
+        color: "ruby-text-gradient",
+      },
+      {
+        name: "Zustand",
+        color: "green-text-gradient",
+      },
+      {
+        name: "XYFlow",
+        color: "violet-text-gradient",
+      },
+      {
+        name: "TensorFlow",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "Turso libsql",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "Recharts",
+        color: "orange-text-gradient",
+      },
+    ],
+    image: neuralnet,
+    images: [neuralnet, neuralnet1, neuralnet2, neuralnet3, neuralnet4], // Multiple screenshot support
+    source_code_link: "https://github.com/Jayant-1/NeuralNet",
+    live_demo_link: "https://neuralnet.jayantpotdar.in/",
+    metrics: {
+      stars: 152,
+      forks: 42,
+      views: "2.3K",
+    },
+    features: [
+      "Drag-and-drop layer nodes and connect them to design a model visually.",
+      "Converts the visual graph into executable TensorFlow/Keras model code.",
+      "Supports built-in datasets like MNIST, Fashion-MNIST, CIFAR-10, and CIFAR-100, plus custom dataset uploads.",
+      "Lets users configure training and view metrics such as loss and accuracy over epochs.",
+      "Trained models can be deployed as API endpoints with generated API keys.",
+      "Provides a UI to test deployed models by sending inference requests and viewing predictions.",
+    ],
+  },
+  {
     name: "Krypton",
     description:
       "Krypton is an AI-powered research assistant that searches arXiv and OpenAlex, ranks papers by relevance, recency, and citations, and helps users understand literature faster with Gemini-generated summaries, structured insights, research-gap analysis, and personalized topic recommendations in a FastAPI + React app.",
@@ -163,7 +232,15 @@ const projects = [
       },
     ],
     image: krypton,
-    images: [krypton], // Multiple screenshot support
+    images: [
+      krypton,
+      krypton1,
+      krypton2,
+      krypton3,
+      krypton4,
+      krypton5,
+      krypton6,
+    ], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/Krypton",
     live_demo_link: "https://krypton-kohl.vercel.app/",
     metrics: {
@@ -207,9 +284,9 @@ const projects = [
       },
     ],
     image: astroPixel,
-    images: [astroPixel], // Multiple screenshot support
+    images: [astroPixel, astroPixel1, astroPixel2, astroPixel3], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/AstroPixel",
-    live_demo_link: "https://astro-pixel.vercel.app/",
+    live_demo_link: "https://astropixel.jayantpotdar.in/",
     metrics: {
       stars: 152,
       forks: 42,
@@ -247,9 +324,13 @@ const projects = [
       },
     ],
     image: malariadetectionsystem,
-    images: [malariadetectionsystem], // Multiple screenshot support
+    images: [
+      malariadetectionsystem,
+      malariadetectionsystem1,
+      malariadetectionsystem2,
+    ], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/MalariaDetectionSystem",
-    live_demo_link: "https://malaria-detection-system.vercel.app/",
+    live_demo_link: "https://malariadetectionsystem.jayantpotdar.in/",
     metrics: {
       stars: 89,
       forks: 28,
@@ -291,9 +372,9 @@ const projects = [
       },
     ],
     image: portfolio,
-    images: [portfolio], // Multiple screenshot support
+    images: [portfolio, about, skills, contact], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/3D-Portfolio",
-    live_demo_link: "https://jayant-1.vercel.app/",
+    live_demo_link: "https://www.jayantpotdar.in/",
     metrics: {
       stars: 234,
       forks: 67,
@@ -335,7 +416,7 @@ const projects = [
       },
     ],
     image: novalearn,
-    images: [novalearn], // Multiple screenshot support
+    images: [novalearn, novalearn1, novalearn2], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/Nova-Learn",
     live_demo_link: "https://nova-learn-jayant.vercel.app/",
     metrics: {
