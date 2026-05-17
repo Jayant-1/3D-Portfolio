@@ -39,7 +39,6 @@ import krypton4 from "./project/krypton4.png";
 import krypton5 from "./project/krypton5.png";
 import krypton6 from "./project/krypton6.png";
 
-import ponggame from "./project/ponggame.png";
 
 import portfolio from "./nav-link-previews/home.png";
 import about from "./nav-link-previews/about.png";
@@ -62,7 +61,6 @@ export {
   astroPixel1,
   astroPixel2,
   astroPixel3,
-  ponggame,
   portfolio,
   about,
   achievements,

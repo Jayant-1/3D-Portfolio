@@ -25,7 +25,6 @@ import {
   malariadetectionsystem,
   mobile,
   novalearn,
-  ponggame,
   portfolio,
   web,
   astroPixel1,
@@ -242,7 +241,7 @@ const projects = [
       krypton6,
     ], // Multiple screenshot support
     source_code_link: "https://github.com/Jayant-1/Krypton",
-    live_demo_link: "https://krypton-kohl.vercel.app/",
+    live_demo_link: "https://krypton.jayantpotdar.in/",
     metrics: {
       stars: 152,
       forks: 42,
@@ -431,42 +430,6 @@ const projects = [
       "Progress tracking and analytics",
       "Futuristic design system",
       "Mobile-responsive learning experience",
-    ],
-  },
-  {
-    name: "Multiplayer Pong Game",
-    description:
-      "Multiplayer Pong Game with three modes: Play with a friend online, play side-by-side on the same screen, or challenge an AI opponent. Fast, fun, and competitive — classic Pong with modern multiplayer options! 🕹️🔥",
-    tags: [
-      {
-        name: "socket",
-        color: "blue-text-gradient",
-      },
-      {
-        name: "express",
-        color: "green-text-gradient",
-      },
-      {
-        name: "JavaScript",
-        color: "pink-text-gradient",
-      },
-    ],
-    image: ponggame,
-    images: [ponggame], // Multiple screenshot support
-    source_code_link: "https://github.com/Jayant-1/Multiplayer_Pong_Game",
-    live_demo_link: "https://multiplayer-pong-game-psi.vercel.app/",
-    metrics: {
-      stars: 76,
-      forks: 19,
-      views: "945",
-    },
-    features: [
-      "Real-time multiplayer gameplay via WebSocket",
-      "Three game modes (Online, Local, AI)",
-      "Responsive controls and smooth physics",
-      "Score tracking and leaderboards",
-      "AI opponent with adjustable difficulty",
-      "Low-latency networking with Express.js",
     ],
   },
 ];
