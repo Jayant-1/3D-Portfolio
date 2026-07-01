@@ -5,7 +5,6 @@ import {
   neuralnet3,
   neuralnet4,
   astroPixel,
-  backend,
   krypton,
   krypton1,
   krypton2,
@@ -17,16 +16,13 @@ import {
   concepts,
   coursera,
   cp,
-  creator,
   designs,
   fcc,
   hr,
   ideas,
   malariadetectionsystem,
-  mobile,
   novalearn,
   portfolio,
-  web,
   astroPixel1,
   astroPixel2,
   astroPixel3,
@@ -54,24 +50,6 @@ export const navLinks = [
   },
 ];
 
-const services = [
-  {
-    title: "Frontend Development",
-    icon: web,
-  },
-  {
-    title: "Backend Development",
-    icon: mobile,
-  },
-  {
-    title: "Database Management",
-    icon: backend,
-  },
-  {
-    title: "Cloud & DevOps",
-    icon: creator,
-  },
-];
 
 const achievements = [
   {
@@ -457,4 +435,4 @@ const words = [
   { text: "Code", imgPath: code, font: "'Source Code Pro', monospace" },
 ];
 
-export { achievements, projects, services, testimonials, words };
+export { achievements, projects, testimonials, words };

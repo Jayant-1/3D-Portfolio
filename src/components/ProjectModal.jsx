@@ -141,7 +141,7 @@ const ProjectModal = ({
               type: "spring",
               damping: 26,
             }}
-            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl top-12 hide-scroll border border-white/10"
+            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[90vh]  top-12 overflow-y-auto shadow-2xl hide-scroll border border-white/10"
             style={{
               boxShadow:
                 "0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(139, 92, 246, 0.08)",

@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import React from "react";
 import { RiBriefcase4Fill } from "react-icons/ri";
 import { Tilt } from "react-tilt";
-import { services } from "../constants";
 import { SectionWrapper } from "../hoc";
 import useMagnetic from "../reactbits/hooks/useMagnetic";
 import { styles } from "../styles";
@@ -75,11 +74,6 @@ const About = () => {
           Download Resume
         </span>
       </button>
-      <div className="mt-12 flex flex-wrap gap-10">
-        {services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} {...service} />
-        ))}
-      </div>
     </>
   );
 };
