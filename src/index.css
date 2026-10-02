@@ -38,43 +38,71 @@
   transition: all cubic-bezier(0.71, 0.03, 0.34, 1);
 }
 .hero-text {
-  @apply flex flex-col justify-center text-[32px] font-semibold relative z-10 pointer-events-none;
+  @apply flex flex-col justify-center text-[22px] sm:text-[32px] font-semibold relative z-10 pointer-events-none;
 }
-/* Override for hero-text slide */
+/* Height-matched aperture for single word display */
 .hero-text .slide {
-  @apply absolute pt-0 py-[30px] h-[48px] md:translate-y-1 translate-y-0 overflow-hidden;
+  height: 34px;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  vertical-align: middle;
+}
+
+@media (min-width: 640px) {
+  .hero-text .slide {
+    height: 48px;
+  }
+}
+
+.word-item {
+  height: 34px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .word-item {
+    height: 48px;
+  }
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-  animation: wordSlider 21s infinite cubic-bezier(0.9, 0.01, 0.3, 0.99);
+  animation: wordSlider 18s infinite cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @keyframes wordSlider {
-  0% {
-    transform: translateY(0.5%);
+  0%, 8.5% {
+    transform: translateY(0%);
   }
-  12.5% {
-    transform: translateY(-12.5%);
+  11.11%, 19.61% {
+    transform: translateY(-11.111%);
   }
-  25% {
-    transform: translateY(-25%);
+  22.22%, 30.72% {
+    transform: translateY(-22.222%);
   }
-  37.5% {
-    transform: translateY(-37.5%);
+  33.33%, 41.83% {
+    transform: translateY(-33.333%);
   }
-  50% {
-    transform: translateY(-50%);
+  44.44%, 52.94% {
+    transform: translateY(-44.444%);
   }
-  62.5% {
-    transform: translateY(-62.5%);
+  55.55%, 64.05% {
+    transform: translateY(-55.555%);
   }
-  75% {
-    transform: translateY(-75%);
+  66.66%, 75.16% {
+    transform: translateY(-66.666%);
   }
-  87.5% {
-    transform: translateY(-87.5%);
+  77.77%, 86.27% {
+    transform: translateY(-77.777%);
+  }
+  88.88%, 97.38% {
+    transform: translateY(-88.888%);
+  }
+  100% {
+    transform: translateY(-100%);
   }
 }
 

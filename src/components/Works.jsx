@@ -179,27 +179,27 @@ const Works = () => {
           <p className={`${styles.sectionSubText} `}>My work</p>
           <h2 className={`${styles.sectionHeadText}`}>Projects.</h2>
         </motion.div>
-        <div className="hero-text overflow-hidden">
+        <div className="hero-text">
           <motion.div
             variants={fadeIn("", "", 0.1, 1)}
             className="mt-3 text-secondary text-[20px] sm:text-[30px] max-w-3xl leading-[36px] sm:leading-[50px]"
           >
-            <h1>
-              Shaping
-              <span className="slide pl-2 sm:pl-3">
+            <div className="flex flex-wrap items-center">
+              <span className="mr-2 sm:mr-3">Shaping</span>
+              <span className="slide">
                 <span className="wrapper">
-                  {words.map((word, index) => (
+                  {[...words, words[0]].map((word, index) => (
                     <span
                       key={index}
-                      className="flex items-center text-xl sm:text-3xl md:gap-3 gap-1 pb-1 sm:pb-2"
+                      className="word-item flex items-center text-xl sm:text-3xl gap-2 md:gap-3"
                     >
                       <img
                         src={word.imgPath}
-                        alt="person"
-                        className="w-7 h-7 sm:w-10 sm:h-10 p-1 md:p-2 rounded-full bg-[#8ec5ff]"
+                        alt="icon"
+                        className="w-6 h-6 sm:w-9 sm:h-9 p-1 rounded-full bg-[#8ec5ff] shrink-0"
                       />
                       <span
-                        className="font-extrabold text-white"
+                        className="font-extrabold text-white whitespace-nowrap"
                         style={{
                           fontFamily: word.font,
                           textShadow: "0 0 4px #8ec5ff, 0 0 6px white",
@@ -211,8 +211,8 @@ const Works = () => {
                   ))}
                 </span>
               </span>
-            </h1>
-            <h1 className="mt-1">into Real Projects that Deliver Results</h1>
+            </div>
+            <h1 className="mt-1 sm:mt-2">into Real Projects that Deliver Results</h1>
           </motion.div>
         </div>
 
