@@ -328,3 +328,15 @@
       -1.8em -1.8em 0 0em #ffffff;
   }
 }
+
+@media (max-width: 768px) {
+  .typed {
+    background-image: linear-gradient(rgba(245, 202, 153, 0.5), rgba(245, 202, 153, 0.5)) !important;
+    background-repeat: no-repeat !important;
+    background-size: 100% 3px !important;
+    background-position: 0px 90% !important;
+    color: rgb(145, 94, 255) !important;
+    display: inline-block !important;
+    font-weight: bold !important;
+  }
+}

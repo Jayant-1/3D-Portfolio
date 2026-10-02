@@ -61,11 +61,11 @@ const Hero = () => {
               aria-hidden="true"
               style={{
                 backgroundImage:
-                  "linear-gradient(to bottom, rgba(245, 202, 153, 0.5), rgba(245, 202, 153, 0.5))",
+                  "linear-gradient(rgba(245, 202, 153, 0.5), rgba(245, 202, 153, 0.5))",
                 backgroundRepeat: "no-repeat",
-                backgroundSize: "100% 8px",
-                backgroundPosition: "0 100%",
-                color: "#915EFF",
+                backgroundSize: isMobile ? "100% 3px" : "100% 8px",
+                backgroundPosition: isMobile ? "0px 90%" : "0 100%",
+                color: "rgb(145, 94, 255)",
                 display: "inline-block",
                 fontWeight: "bold",
               }}
