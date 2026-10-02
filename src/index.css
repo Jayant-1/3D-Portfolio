@@ -368,3 +368,11 @@
     font-weight: bold !important;
   }
 }
+
+/* Allow mobile vertical touch gestures (swipe down / swipe up) to scroll smoothly without getting trapped by 3D canvases */
+canvas,
+#hero,
+#hero * {
+  touch-action: pan-y !important;
+}
+

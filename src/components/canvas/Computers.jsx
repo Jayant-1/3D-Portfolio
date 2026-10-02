@@ -8,12 +8,20 @@ const EnableContextMenu = () => {
   const { gl } = useThree();
 
   useEffect(() => {
+    const domElement = gl.domElement;
+    const parent = domElement.parentElement;
+    const grandParent = parent?.parentElement;
+
+    // Enforce touch-action: pan-y so vertical swipes scroll the page natively on mobile
+    domElement.style.touchAction = "pan-y";
+    if (parent) parent.style.touchAction = "pan-y";
+    if (grandParent) grandParent.style.touchAction = "pan-y";
+
     const handleContextMenu = (e) => {
       // Prevent OrbitControls from calling preventDefault() on contextmenu
       e.stopImmediatePropagation();
     };
 
-    const domElement = gl.domElement;
     domElement.addEventListener("contextmenu", handleContextMenu, { capture: true });
 
     return () => {
