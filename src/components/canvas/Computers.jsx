@@ -1,8 +1,28 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
 import CanvasLoader from "../Loader";
+
+const EnableContextMenu = () => {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const handleContextMenu = (e) => {
+      // Prevent OrbitControls from calling preventDefault() on contextmenu
+      e.stopImmediatePropagation();
+    };
+
+    const domElement = gl.domElement;
+    domElement.addEventListener("contextmenu", handleContextMenu, { capture: true });
+
+    return () => {
+      domElement.removeEventListener("contextmenu", handleContextMenu, { capture: true });
+    };
+  }, [gl]);
+
+  return null;
+};
 
 const Computers = ({ isMobile }) => {
   const computer = useGLTF("./desktop_pc/scene_opt.glb");
@@ -59,6 +79,7 @@ const ComputersCanvas = () => {
       style={{ touchAction: "pan-y" }}
     >
       <Suspense fallback={<CanvasLoader />}>
+        <EnableContextMenu />
         <OrbitControls
           enableZoom={false}
           enablePan={false}

@@ -1,8 +1,28 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
 import CanvasLoader from "../Loader";
+
+const EnableContextMenu = () => {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const handleContextMenu = (e) => {
+      // Prevent OrbitControls from calling preventDefault() on contextmenu
+      e.stopImmediatePropagation();
+    };
+
+    const domElement = gl.domElement;
+    domElement.addEventListener("contextmenu", handleContextMenu, { capture: true });
+
+    return () => {
+      domElement.removeEventListener("contextmenu", handleContextMenu, { capture: true });
+    };
+  }, [gl]);
+
+  return null;
+};
 
 const Earth = () => {
   const earth = useGLTF("./planet/scene_opt.glb");
@@ -38,8 +58,10 @@ const EarthCanvas = () => {
       style={{ touchAction: "pan-y" }}
     >
       <Suspense fallback={<CanvasLoader />}>
+        <EnableContextMenu />
         <OrbitControls
           autoRotate
+          enablePan={false}
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
