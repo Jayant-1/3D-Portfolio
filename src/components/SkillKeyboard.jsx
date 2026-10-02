@@ -267,7 +267,152 @@ const SkillKeyboard = () => {
     // You can add scroll-based triggers here if you want to animate between sections
   };
 
-  // Render the 3D keyboard section
+  // Render the 3D keyboard section (Desktop) or Tactile Keycap Grid (Mobile)
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const CATEGORIES = {
+    All: Object.keys(SKILLS),
+    Frontend: ["react", "nextjs", "vue", "js", "ts", "html", "css", "tailwind"],
+    Backend: ["nodejs", "express", "postgres", "mongodb", "firebase"],
+    "DevOps & Tools": [
+      "git",
+      "github",
+      "docker",
+      "aws",
+      "nginx",
+      "linux",
+      "vercel",
+      "npm",
+    ],
+  };
+
+  const handleMobileSkillSelect = (skillKey) => {
+    const skill = SKILLS[skillKey];
+    setSelectedSkill(skill);
+    soundEffects.playClick();
+  };
+
+  if (isMobile) {
+    return (
+      <section
+        ref={sectionRef}
+        id="skills"
+        className="w-full min-h-screen py-16 px-4 sm:px-8 mx-auto flex flex-col items-center justify-center relative z-10"
+      >
+        <div className="w-full max-w-2xl mx-auto flex flex-col items-center">
+          <p className="text-secondary text-sm uppercase tracking-wider text-center">
+            My Capabilities
+          </p>
+          <h2 className="text-white font-black text-3xl sm:text-4xl text-center mt-1 tracking-tight">
+            Skills.
+          </h2>
+          <p className="text-xs text-secondary mt-1 text-center">
+            (Tap a keycap to inspect skill details)
+          </p>
+
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap justify-center gap-2 mt-6 mb-6">
+            {Object.keys(CATEGORIES).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => {
+                  setActiveCategory(cat);
+                  soundEffects.playClick();
+                }}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                  activeCategory === cat
+                    ? "bg-[#8ec5ff] text-[#07080d] shadow-lg shadow-blue-500/20"
+                    : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Active Skill Preview Card */}
+          {selectedSkill && (
+            <div className="w-full bg-[#111522]/95 border border-[#8ec5ff]/40 rounded-2xl p-4 sm:p-5 mb-6 shadow-2xl backdrop-blur-md animate-fade-in transition-all">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center p-2 bg-white/10 border border-white/15"
+                    style={{ borderColor: selectedSkill.color }}
+                  >
+                    <img
+                      src={selectedSkill.icon}
+                      alt={selectedSkill.label}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold text-base sm:text-lg">
+                      {selectedSkill.label}
+                    </h3>
+                    <span
+                      className="text-[11px] font-semibold uppercase tracking-wider"
+                      style={{ color: selectedSkill.color || "#8ec5ff" }}
+                    >
+                      Active Skill
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedSkill(null)}
+                  className="text-white/60 hover:text-white p-1 text-sm rounded-lg"
+                  aria-label="Close skill details"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="mt-3 text-xs sm:text-sm text-secondary leading-relaxed">
+                {selectedSkill.shortDescription}
+              </p>
+            </div>
+          )}
+
+          {/* Tactile Keycaps Grid */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full">
+            {CATEGORIES[activeCategory].map((skillKey) => {
+              const skill = SKILLS[skillKey];
+              if (!skill) return null;
+              const isSelected = selectedSkill?.name === skill.name;
+
+              return (
+                <button
+                  key={skill.name}
+                  onClick={() => handleMobileSkillSelect(skillKey)}
+                  className={`group relative flex flex-col items-center justify-center p-3 rounded-xl transition-all duration-200 active:scale-95 border ${
+                    isSelected
+                      ? "bg-gradient-to-b from-[#1a233a] to-[#111522] border-[#8ec5ff] shadow-[0_0_15px_rgba(142,197,255,0.3)] -translate-y-1"
+                      : "bg-[#0c101a]/90 hover:bg-[#131929] border-white/10 hover:border-white/20"
+                  }`}
+                  style={{ minHeight: "84px" }}
+                >
+                  <div className="w-7 h-7 flex items-center justify-center mb-1.5 transition-transform group-hover:scale-110">
+                    <img
+                      src={skill.icon}
+                      alt={skill.label}
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <span className="text-[11px] font-semibold text-white/90 text-center line-clamp-1">
+                    {skill.label}
+                  </span>
+                  {/* Subtle keycap 3D bevel bottom */}
+                  <div className="absolute bottom-0 left-2 right-2 h-[2px] bg-white/10 rounded-full" />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <span id="projects"></span>
+      </section>
+    );
+  }
+
+  // Desktop Spline Keyboard Render
   return (
     <section
       ref={sectionRef}
@@ -282,8 +427,6 @@ const SkillKeyboard = () => {
         justifyContent: "center",
       }}
     >
-      {/* Skills Title */}
-
       <div
         style={{
           width: "100%",
@@ -310,8 +453,7 @@ const SkillKeyboard = () => {
         <p style={{ textAlign: "center", color: "#aaa" }}>
           (hint: press a key)
         </p>
-        {/* Suspense fallback while loading the Spline 3D scene */}
-        <Suspense fallback={<div>Loading 3D Keyboard...</div>}>
+        <Suspense fallback={<div className="text-white">Loading 3D Keyboard...</div>}>
           <Spline
             ref={splineContainer}
             onLoad={(app) => setSplineApp(app)}

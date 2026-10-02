@@ -77,9 +77,9 @@ export default function Loader() {
             variants={opacity}
             initial="initial"
             animate="enter"
-            transition={{ delay: 1 }}
+            transition={{ delay: 0.8 }}
           >
-            Click or press any key to skip
+            Tap anywhere or press any key to skip
           </motion.div>
           <svg>
             <motion.path

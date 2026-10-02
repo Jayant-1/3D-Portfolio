@@ -50,18 +50,18 @@ const About = () => {
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
+        className="mt-4 text-secondary text-[15px] sm:text-[17px] max-w-3xl leading-[28px] sm:leading-[32px]"
       >
-        I'm a Jayant Sunil Potdar. A Full Stack Web developer with experience in
-        HTML, CSS, and JavaScript, and expertise in frameworks like React, and
-        Bootstrap. I'm a quick learner and to create efficient, scalable, and
-        user-friendly solutions that solve real-world problems. Let's work
-        together to bring our ideas to life!
+        I'm Jayant Sunil Potdar, a Full Stack Developer passionate about turning
+        ambitious ideas into polished, high-performance web applications. I
+        specialize in modern frontend engineering, Three.js 3D interactions, and
+        scalable backend architectures. Let's work together to build something
+        extraordinary!
       </motion.p>
       <button
         ref={resumeButtonRef}
         style={magneticStyle}
-        className="mt-10 px-6 py-3 text-white bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-md shadow-md hover:bg-gradient-to-r hover:from-cyan-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+        className="mt-8 sm:mt-10 px-6 py-3.5 text-white bg-gradient-to-r from-cyan-500 to-indigo-500 hover:from-cyan-400 hover:to-indigo-400 rounded-xl shadow-lg shadow-cyan-500/20 active:scale-95 transition-all duration-200 cursor-pointer"
         onClick={() =>
           window.open(
             "https://drive.google.com/file/d/1qRPD6T3OghlApROzIfoT0FPg4S9QgptL/view?usp=sharing",
@@ -69,8 +69,8 @@ const About = () => {
           )
         }
       >
-        <span className="font-semibold flex gap-1.5 items-center">
-          <RiBriefcase4Fill />
+        <span className="font-semibold flex gap-2 items-center text-sm sm:text-base">
+          <RiBriefcase4Fill size={18} />
           Download Resume
         </span>
       </button>

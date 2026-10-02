@@ -16,19 +16,19 @@ const FeedbackCard = ({
 }) => (
   <motion.div
     variants={fadeIn("", "spring", index * 0.5, 0.75)}
-    className="bg-[#0f0f0f] p-10 rounded-3xl xs:w-[320px] w-full"
+    className="bg-[#0f0f0f] p-6 sm:p-10 rounded-2xl sm:rounded-3xl xs:w-[320px] w-full border border-white/5"
   >
-    <p className="text-white font-black text-[48px]">"</p>
+    <p className="text-white font-black text-[36px] sm:text-[48px]">"</p>
 
     <div className="mt-1">
-      <p className="text-white tracking-wider text-[18px]">{testimonial}</p>
+      <p className="text-white tracking-wider text-[15px] sm:text-[18px] leading-relaxed">{testimonial}</p>
 
       <div className="mt-7 flex justify-between items-center gap-1">
         <div className="flex-1 flex flex-col">
-          <p className="text-white font-medium text-[16px]">
+          <p className="text-white font-medium text-[15px] sm:text-[16px]">
             <span className="blue-text-gradient">@</span> {name}
           </p>
-          <p className="mt-1 text-secondary text-[12px]">
+          <p className="mt-1 text-secondary text-[11px] sm:text-[12px]">
             {designation} of {company}
           </p>
         </div>
@@ -45,9 +45,9 @@ const FeedbackCard = ({
 
 const Feedbacks = () => {
   return (
-      <div className={`mt-12 bg-[#0a0c14] rounded-[20px]`}>
+      <div className={`mt-8 sm:mt-12 bg-[#0a0c14] rounded-[20px] overflow-hidden`}>
         <div
-          className={` bg-[#111522] rounded-2xl ${styles.padding} min-h-[300px]`}
+          className={` bg-[#111522] rounded-2xl ${styles.padding} min-h-[220px] sm:min-h-[300px]`}
         >
           <motion.div variants={textVariant()}>
             <p className={`text-[#8ec5ff] ${styles.sectionSubText}`}>
@@ -56,7 +56,7 @@ const Feedbacks = () => {
             <h2 className={styles.sectionHeadText}>Testimonials.</h2>
           </motion.div>
         </div>
-        <div className={`-mt-20 pb-14 ${styles.paddingX} flex flex-wrap gap-7`}>
+        <div className={`-mt-14 sm:-mt-20 pb-10 sm:pb-14 ${styles.paddingX} flex flex-wrap gap-5 sm:gap-7`}>
           {testimonials.map((testimonial, index) => (
             <FeedbackCard
               key={testimonial.name}

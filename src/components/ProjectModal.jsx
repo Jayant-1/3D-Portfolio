@@ -121,6 +121,29 @@ const ProjectModal = ({
     setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
   };
 
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const minSwipeDistance = 45;
+
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    if (distance > minSwipeDistance) {
+      nextImage();
+    } else if (distance < -minSwipeDistance) {
+      prevImage();
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -130,7 +153,7 @@ const ProjectModal = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           onClick={handleBackdropClick}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-hidden"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 overflow-hidden"
         >
           <motion.div
             initial={{ scale: 0.94, opacity: 0, y: previewReady ? 6 : 12 }}
@@ -141,7 +164,7 @@ const ProjectModal = ({
               type: "spring",
               damping: 26,
             }}
-            className="relative bg-[#1a1f35] rounded-3xl max-w-4xl w-full max-h-[90vh]  top-12 overflow-y-auto shadow-2xl hide-scroll border border-white/10"
+            className="relative bg-[#1a1f35] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[94vh] sm:max-h-[90vh] top-2 sm:top-6 md:top-10 overflow-y-auto shadow-2xl hide-scroll border border-white/10"
             style={{
               boxShadow:
                 "0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(139, 92, 246, 0.08)",
@@ -225,7 +248,10 @@ const ProjectModal = ({
             {/* Project Image Carousel */}
             <div
               key={projectKey}
-              className="relative w-full h-[350px] md:h-[450px] overflow-hidden rounded-t-3xl group/carousel bg-[#0d1120]"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              className="relative w-full h-[260px] sm:h-[350px] md:h-[450px] overflow-hidden rounded-t-2xl sm:rounded-t-3xl group/carousel bg-[#0d1120] touch-pan-y"
             >
               <motion.img
                 key={`${projectKey}-${safeImageIndex}-${currentImage}`}
@@ -242,25 +268,25 @@ const ProjectModal = ({
               {/* Image Carousel Controls (if multiple images) */}
               {images.length > 1 && (
                 <>
-                  {/* Image Navigation Arrows */}
-                  <div className="absolute inset-y-0 left-0 flex items-center px-2 md:px-4 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 z-10">
+                  {/* Image Navigation Arrows - Always visible on mobile, hover on desktop */}
+                  <div className="absolute inset-y-0 left-0 flex items-center px-2 md:px-4 opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 transition-opacity duration-300 z-10">
                     <button
                       onClick={prevImage}
-                      className="w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/80 backdrop-blur-md rounded-full text-white transition-all duration-200 hover:scale-110 border border-white/10"
+                      className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-black/60 hover:bg-black/90 active:scale-90 backdrop-blur-md rounded-full text-white transition-all duration-200 border border-white/15 shadow-lg"
                       aria-label="Previous image"
                     >
-                      <svg className="w-6 h-6 pr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 pr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
                     </button>
                   </div>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 md:px-4 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 z-10">
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 md:px-4 opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 transition-opacity duration-300 z-10">
                     <button
                       onClick={nextImage}
-                      className="w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/80 backdrop-blur-md rounded-full text-white transition-all duration-200 hover:scale-110 border border-white/10"
+                      className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-black/60 hover:bg-black/90 active:scale-90 backdrop-blur-md rounded-full text-white transition-all duration-200 border border-white/15 shadow-lg"
                       aria-label="Next image"
                     >
-                      <svg className="w-6 h-6 pl-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </button>

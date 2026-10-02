@@ -143,12 +143,12 @@ const Navbar = () => {
         </a>
         <button
           onClick={() => setIsActive((v) => !v)}
-          className="flex items-center justify-center gap-3 m-0 p-0 h-6 bg-transparent text-base font-normal"
-          style={{ margin: window.innerWidth >= 600 ? "20px" : "15px" }}
+          className="flex items-center justify-center gap-3 my-2 sm:my-4 p-2 bg-transparent text-base font-normal cursor-pointer"
+          aria-label={isActive ? "Close menu" : "Open menu"}
         >
           <div
-            className="relative flex items-center text-[22px]"
-            style={{ minWidth: 60 }}
+            className="relative flex items-center text-[18px] sm:text-[22px]"
+            style={{ minWidth: 50 }}
           >
             <motion.p
               variants={opacity}
@@ -175,7 +175,7 @@ const Navbar = () => {
               Close
             </motion.p>
           </div>
-          <div className="relative w-[22.5px] h-[16px] flex flex-col justify-center items-center mx-2">
+          <div className="relative w-[22.5px] h-[16px] flex flex-col justify-center items-center mx-1 sm:mx-2">
             {/* Top line */}
             <motion.span
               className="absolute left-0 w-full h-[1px] bg-white block"
@@ -183,7 +183,7 @@ const Navbar = () => {
               animate={
                 isActive ? { rotate: 45, top: "7.5px" } : { rotate: 0, top: 0 }
               }
-              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+              transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             />
             {/* Middle line */}
             <motion.span
@@ -194,7 +194,7 @@ const Navbar = () => {
                   ? { opacity: 0 }
                   : { opacity: 1, rotate: 0, top: "7.5px" }
               }
-              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+              transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             />
             {/* Bottom line */}
             <motion.span
@@ -205,7 +205,7 @@ const Navbar = () => {
                   ? { rotate: -45, top: "7.5px" }
                   : { rotate: 0, top: "15px" }
               }
-              transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }}
+              transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             />
           </div>
         </button>
@@ -214,22 +214,20 @@ const Navbar = () => {
         variants={height}
         initial="initial"
         animate={isActive ? "enter" : "exit"}
-        className="w-full left-0 absolute"
-        style={{ zIndex: 20, background: "rgba(7,8,13,0.9)" }}
+        className="w-full left-0 absolute shadow-2xl backdrop-blur-2xl"
+        style={{ zIndex: 20, background: "rgba(7,8,13,0.96)" }}
       >
         <AnimatePresence>
           {isActive && (
             <motion.div
-              className="flex flex-row justify-between items-center w-full max-w-8xl mx-auto relative min-h-[60vh]"
-              style={{ minHeight: 600 }}
+              className="flex flex-col md:flex-row justify-between items-start md:items-center w-full max-w-8xl mx-auto relative py-6 px-4 sm:px-8 max-h-[85vh] overflow-y-auto"
             >
-              <div className="flex flex-wrap items-start gap-1 w-2/3 pl-8">
+              <div className="flex flex-col md:flex-wrap items-start gap-1 w-full md:w-2/3 pl-2 sm:pl-6">
                 {NAV_LINKS.map((link, idx) => (
                   <a
                     key={link.title}
                     href={link.href}
-                    className="group cursor-pointer rounded-lg px-3 py-2 text-5xl md:text-7xl font-extrabold uppercase transition-all duration-200 whitespace-nowrap text-left relative"
-                    style={{ minHeight: "4.5rem" }}
+                    className="group cursor-pointer rounded-lg px-2 sm:px-3 py-2 text-2xl sm:text-4xl md:text-6xl font-extrabold uppercase transition-all duration-200 text-left relative w-full md:w-auto min-h-[44px] flex items-center"
                     onMouseOver={() => {
                       handleEnter(idx);
                     }}
@@ -239,30 +237,38 @@ const Navbar = () => {
                       handleClick(idx);
                     }}
                   >
-                    <motion.p
-                      variants={blur}
-                      animate={
-                        isHovering && focusedIndex !== idx ? "open" : "closed"
-                      }
-                      style={{
-                        display: "inline-block",
-                        margin: 0,
-                        color:
-                          focusedIndex === idx && isHovering
-                            ? "#fff"
-                            : "#8eadff",
-                        transition: "color 0.3s, text-shadow 0.3s",
-                        textShadow:
-                          focusedIndex === idx && isHovering
-                            ? "0 0 10px #fff, 0 0 100px #121212"
-                            : "none",
-                      }}
-                    >
-                      {getChars(link.title.toUpperCase())}
-                    </motion.p>
+                    <span className="hidden md:inline-block">
+                      <motion.p
+                        variants={blur}
+                        animate={
+                          isHovering && focusedIndex !== idx ? "open" : "closed"
+                        }
+                        style={{
+                          display: "inline-block",
+                          margin: 0,
+                          color:
+                            focusedIndex === idx && isHovering
+                              ? "#fff"
+                              : "#8eadff",
+                          transition: "color 0.3s, text-shadow 0.3s",
+                          textShadow:
+                            focusedIndex === idx && isHovering
+                              ? "0 0 10px #fff, 0 0 100px #121212"
+                              : "none",
+                        }}
+                      >
+                        {getChars(link.title.toUpperCase())}
+                      </motion.p>
+                    </span>
+
+                    {/* Mobile optimized simple clean text */}
+                    <span className="md:hidden tracking-wider text-white/90 group-hover:text-[#8ec5ff] group-active:text-[#8ec5ff] transition-colors">
+                      {link.title.toUpperCase()}
+                    </span>
+
                     <motion.div
                       layoutId={`${isActive ? "" : "underline"}`}
-                      className="absolute left-0 bottom-0 h-[4px] rounded origin-left"
+                      className="absolute left-0 bottom-0 h-[2px] md:h-[4px] rounded origin-left"
                       style={{
                         background:
                           focusedIndex === idx && isHovering

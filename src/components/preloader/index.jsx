@@ -39,8 +39,8 @@ function Preloader({ children, disabled = false }) {
   usePreloaderBypass({
     onBypass: bypassLoading,
     keys: ["any"],
-    clickEnabled: false,
-    touchEnabled: false,
+    clickEnabled: true,
+    touchEnabled: true,
     disabled: disabled || !isLoading,
   });
 

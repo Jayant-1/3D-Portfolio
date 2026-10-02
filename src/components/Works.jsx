@@ -38,7 +38,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
           stiffness: 230,
           damping: 24,
         }}
-        className="relative h-[320px] rounded-xl overflow-hidden cursor-pointer group bg-[#0a0e17] border border-white/[0.06] hover:border-white/[0.14] transition-all duration-400 shadow-[0_6px_24px_rgb(0,0,0,0.25)] hover:shadow-[0_12px_30px_rgb(0,0,0,0.4)]"
+        className="relative h-[270px] sm:h-[320px] rounded-xl overflow-hidden cursor-pointer group bg-[#0a0e17] border border-white/[0.06] hover:border-white/[0.14] transition-all duration-400 shadow-[0_6px_24px_rgb(0,0,0,0.25)] hover:shadow-[0_12px_30px_rgb(0,0,0,0.4)]"
         onClick={() => onOpenModal(previewReady)}
       >
         {/* Subtle Top Accent Line */}
@@ -178,24 +178,24 @@ const Works = () => {
           <p className={`${styles.sectionSubText} `}>My work</p>
           <h2 className={`${styles.sectionHeadText}`}>Projects.</h2>
         </motion.div>
-        <div className="hero-text">
-          <motion.span
+        <div className="hero-text overflow-hidden">
+          <motion.div
             variants={fadeIn("", "", 0.1, 1)}
-            className="mt-3 text-secondary text-[30px] max-w-3xl leading-[50px]"
+            className="mt-3 text-secondary text-[20px] sm:text-[30px] max-w-3xl leading-[36px] sm:leading-[50px]"
           >
             <h1>
               Shaping
-              <span className="slide pl-3">
+              <span className="slide pl-2 sm:pl-3">
                 <span className="wrapper">
                   {words.map((word, index) => (
                     <span
                       key={index}
-                      className="flex items-center text-3xl md:gap-3 gap-1 pb-2"
+                      className="flex items-center text-xl sm:text-3xl md:gap-3 gap-1 pb-1 sm:pb-2"
                     >
                       <img
                         src={word.imgPath}
                         alt="person"
-                        className=" md:p-2 p-1 rounded-full bg-[#8ec5ff]"
+                        className="w-7 h-7 sm:w-10 sm:h-10 p-1 md:p-2 rounded-full bg-[#8ec5ff]"
                       />
                       <span
                         className="font-extrabold text-white"
@@ -211,11 +211,11 @@ const Works = () => {
                 </span>
               </span>
             </h1>
-            <h1>into Real Projects that Deliver Results</h1>
-          </motion.span>
+            <h1 className="mt-1">into Real Projects that Deliver Results</h1>
+          </motion.div>
         </div>
 
-        <div className="mt-20 flex flex-wrap gap-10">
+        <div className="mt-10 sm:mt-20 flex flex-wrap gap-6 sm:gap-10">
           {projects.map((project, index) => (
             <ProjectCard
               key={`project-${index}`}
