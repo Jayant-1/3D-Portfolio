@@ -295,7 +295,7 @@ export const SKILLS = {
     shortDescription:
       "Amazon Web Services — comprehensive cloud computing platform offering scalable computing, storage, and networking.",
     color: "#ff9900",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aws/aws-original.svg",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg",
   },
   vercel: {
     id: 30,
