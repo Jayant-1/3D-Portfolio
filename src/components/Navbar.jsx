@@ -10,6 +10,7 @@ import {
   testimonials,
   contact,
   logo,
+  jLogo,
 } from "../assets";
 import useNavPeek from "../reactbits/hooks/useNavPeek";
 
@@ -138,8 +139,12 @@ const Navbar = () => {
       transition={{ duration: 0.8 }}
     >
       <div className="flex items-center justify-between max-w-8xl my-2 mx-4 relative">
-        <a href="#hero" className="flex mx-6 items-center justify-center">
-          <span className="text-3xl ">JAYANT</span>
+        <a href="#hero" className="flex mx-2 sm:mx-6 items-center justify-center">
+          <img
+            src={jLogo}
+            alt="Jayant Logo"
+            className="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-full shadow-md hover:scale-105 transition-transform duration-300"
+          />
         </a>
         <button
           onClick={() => setIsActive((v) => !v)}

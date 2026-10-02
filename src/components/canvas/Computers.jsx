@@ -1,4 +1,5 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 
@@ -36,6 +37,14 @@ const Computers = ({ isMobile }) => {
   const computer = useGLTF("./desktop_pc/scene_opt.glb");
   const modelRef = useRef();
   const { gl, invalidate } = useThree();
+
+  const centerOffset = useMemo(() => {
+    if (!computer?.scene) return { x: 0, y: 0, z: 0 };
+    const box = new THREE.Box3().setFromObject(computer.scene);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    return { x: center.x, y: center.y, z: center.z };
+  }, [computer]);
 
   const touchState = useRef({
     startX: 0,
@@ -208,8 +217,8 @@ const Computers = ({ isMobile }) => {
   return (
     <group
       ref={modelRef}
-      position={isMobile ? [0, -2.2, -1.8] : [0, -3.25, -1.5]}
-      scale={isMobile ? 0.46 : 0.75}
+      position={isMobile ? [0, -2.2, 0] : [0, -3.25, -1.5]}
+      scale={isMobile ? 0.40 : 0.75}
       rotation={[-0.01, -0.2, -0.1]}
     >
       <hemisphereLight intensity={isMobile ? 0.35 : 0.2} groundColor='black' />
@@ -224,7 +233,7 @@ const Computers = ({ isMobile }) => {
       <pointLight intensity={isMobile ? 1.2 : 1} />
       <primitive
         object={computer.scene}
-        position={[0, 0, 0]}
+        position={isMobile ? [-centerOffset.x, 0, -centerOffset.z] : [0, 0, 0]}
         rotation={[0, 0, 0]}
       />
     </group>
