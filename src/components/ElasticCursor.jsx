@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import { useCursorState } from "../reactbits/context/ReactBitsCursorProvider";
-import { useMouse } from "../utils/useMouse";
 
 // Gsap Ticker Function
 function useTicker(callback, paused) {
@@ -61,14 +60,34 @@ function ElasticCursor() {
   const jellyRef = useRef(null);
   const dotRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
-  const { x, y } = useMouse();
   const { setTargetBounds, setHoverTarget } = useCursorState();
   const pos = useInstance(() => ({ x: -100, y: -100 }));
   const vel = useInstance(() => ({ x: 0, y: 0 }));
   const set = useInstance();
+  const setDot = useInstance();
 
   useLayoutEffect(() => {
-    if (!jellyRef.current) return;
+    if (!jellyRef.current || !dotRef.current) return;
+
+    // Explicitly set xPercent and yPercent in GSAP cache for both elements
+    // so Firefox, Chrome, and Safari always align both centers perfectly at 50% 50%
+    // without relying on Tailwind CSS variables which Firefox does not decompose into GSAP xPercent.
+    gsap.set(jellyRef.current, {
+      xPercent: -50,
+      yPercent: -50,
+      transformOrigin: "50% 50%",
+      x: -100,
+      y: -100,
+    });
+
+    gsap.set(dotRef.current, {
+      xPercent: -50,
+      yPercent: -50,
+      transformOrigin: "50% 50%",
+      x: -100,
+      y: -100,
+    });
+
     set.x = gsap.quickSetter(jellyRef.current, "x", "px");
     set.y = gsap.quickSetter(jellyRef.current, "y", "px");
     set.r = gsap.quickSetter(jellyRef.current, "rotate", "deg");
@@ -76,6 +95,9 @@ function ElasticCursor() {
     set.sy = gsap.quickSetter(jellyRef.current, "scaleY");
     set.width = gsap.quickSetter(jellyRef.current, "width", "px");
     set.height = gsap.quickSetter(jellyRef.current, "height", "px");
+
+    setDot.x = gsap.quickSetter(dotRef.current, "x", "px");
+    setDot.y = gsap.quickSetter(dotRef.current, "y", "px");
   }, []);
 
   const loop = useCallback(() => {
@@ -109,7 +131,10 @@ function ElasticCursor() {
     if (isMobile) return;
 
     const setFromEvent = (e) => {
-      if (!jellyRef.current) return;
+      if (!jellyRef.current || !dotRef.current) return;
+
+      const clientX = e.clientX;
+      const clientY = e.clientY;
 
       if (!cursorMoved) {
         setCursorMoved(true);
@@ -117,6 +142,11 @@ function ElasticCursor() {
           opacity: 1,
           duration: 0.2,
         });
+      }
+
+      if (setDot.x && setDot.y) {
+        setDot.x(clientX);
+        setDot.y(clientY);
       }
 
       const el = e.target;
@@ -157,9 +187,6 @@ function ElasticCursor() {
         });
       }
 
-      const clientX = e.clientX;
-      const clientY = e.clientY;
-
       gsap.to(pos, {
         x: clientX,
         y: clientY,
@@ -177,7 +204,7 @@ function ElasticCursor() {
     };
 
     const handleMouseLeave = () => {
-      if (!jellyRef.current) return;
+      if (!jellyRef.current || !dotRef.current) return;
       gsap.to([jellyRef.current, dotRef.current], {
         opacity: 0,
         duration: 0.2,
@@ -185,7 +212,7 @@ function ElasticCursor() {
     };
 
     const handleMouseEnter = () => {
-      if (!jellyRef.current) return;
+      if (!jellyRef.current || !dotRef.current) return;
       gsap.to([jellyRef.current, dotRef.current], {
         opacity: 1,
         duration: 0.2,
@@ -212,7 +239,7 @@ function ElasticCursor() {
       <div
         ref={jellyRef}
         id="jelly-id"
-        className="jelly-blob fixed left-0 top-0 rounded-full z-[999] pointer-events-none will-change-transform translate-x-[-50%] translate-y-[-50%] opacity-0"
+        className="jelly-blob fixed left-0 top-0 rounded-full z-[999] pointer-events-none will-change-transform opacity-0"
         style={{
           width: CURSOR_DIAMETER,
           height: CURSOR_DIAMETER,
@@ -225,12 +252,11 @@ function ElasticCursor() {
       {/* Small subtle center dot */}
       <div
         ref={dotRef}
-        className="w-2 h-2 rounded-full fixed translate-x-[-50%] translate-y-[-50%] pointer-events-none opacity-0 bg-[#8ec5ff]"
+        className="w-2 h-2 rounded-full fixed left-0 top-0 pointer-events-none opacity-0 bg-[#8ec5ff]"
         style={{
-          top: y,
-          left: x,
           zIndex: 1000,
           boxShadow: "0 0 8px #8ec5ff",
+          pointerEvents: "none",
         }}
       />
     </>
