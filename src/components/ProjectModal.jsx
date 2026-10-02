@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { github } from "../assets";
 
 const getProjectImages = (project) => {
@@ -142,11 +143,11 @@ const ProjectModal = ({
   };
 
   // Early return after all hooks
-  if (!project) return null;
+  if (!project || typeof document === "undefined") return null;
 
   const currentImage = images[safeImageIndex] || project.image;
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -155,8 +156,62 @@ const ProjectModal = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           onClick={handleBackdropClick}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-4 overflow-hidden"
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 overflow-hidden"
         >
+          {/* Navigation Arrows (For projects) */}
+          {projects.length > 1 && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateToProject(currentIndex - 1);
+                }}
+                disabled={currentIndex === 0}
+                className="fixed left-2 md:left-6 lg:left-8 xl:left-14 top-1/2 -translate-y-1/2 z-[100000] w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-black/60 hover:bg-black/90 active:scale-90 backdrop-blur-md transition-all duration-200 disabled:opacity-0 disabled:pointer-events-none group border border-white/20 shadow-2xl text-white"
+                aria-label="Previous project"
+                title="← Previous project"
+              >
+                <svg
+                  className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:-translate-x-1 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigateToProject(currentIndex + 1);
+                }}
+                disabled={currentIndex === projects.length - 1}
+                className="fixed right-2 md:right-6 lg:right-8 xl:right-14 top-1/2 -translate-y-1/2 z-[100000] w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-black/60 hover:bg-black/90 active:scale-90 backdrop-blur-md transition-all duration-200 disabled:opacity-0 disabled:pointer-events-none group border border-white/20 shadow-2xl text-white"
+                aria-label="Next project"
+                title="→ Next project"
+              >
+                <svg
+                  className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:translate-x-1 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </>
+          )}
+
           <motion.div
             initial={{ scale: 0.94, opacity: 0, y: previewReady ? 6 : 12 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -166,86 +221,35 @@ const ProjectModal = ({
               type: "spring",
               damping: 26,
             }}
-            className="relative bg-[#1a1f35] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[94vh] sm:max-h-[90vh] top-2 sm:top-6 md:top-10 overflow-y-auto shadow-2xl hide-scroll border border-white/10"
+            className="relative bg-[#1a1f35] rounded-2xl sm:rounded-3xl max-w-4xl w-full max-h-[88vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl hide-scroll border border-white/15 my-auto"
             style={{
               boxShadow:
-                "0 0 0 1px rgba(255, 255, 255, 0.06), 0 20px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(139, 92, 246, 0.08)",
+                "0 0 0 1px rgba(255, 255, 255, 0.08), 0 25px 90px rgba(0, 0, 0, 0.75), 0 0 60px rgba(139, 92, 246, 0.12)",
             }}
             onClick={(e) => e.stopPropagation()}
             onWheel={handleWheel}
           >
             <style>{`.hide-scroll::-webkit-scrollbar{display:none;} .hide-scroll{scrollbar-width:none; -ms-overflow-style:none; overscroll-behavior: contain;}`}</style>
-            {/* Close Button */}
+            
+            {/* Close Button - High Contrast, Accessible, Tap-friendly */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all duration-200 group border border-white/10"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-30 w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-black/75 hover:bg-black active:scale-90 backdrop-blur-md transition-all duration-200 group border border-white/20 shadow-xl"
               aria-label="Close modal"
               title="Press ESC to close"
             >
               <svg
-                className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-200"
+                className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:rotate-90 transition-transform duration-200"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
                 <path d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
-
-            {/* Navigation Arrows (For projects) */}
-            {projects.length > 1 && (
-              <>
-                <button
-                  onClick={() => {
-                    navigateToProject(currentIndex - 1);
-                  }}
-                  disabled={currentIndex === 0}
-                  className="fixed left-2 md:left-10 lg:left-72 top-1/2 -translate-y-1/2 z-[60] w-12 h-12 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all duration-200 disabled:opacity-0 disabled:cursor-not-allowed group border border-white/10"
-                  aria-label="Previous project"
-                  title="← Previous project"
-                >
-                  <svg
-                    className="w-8 h-8 text-white group-hover:-translate-x-1 transition-transform duration-200"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => {
-                    navigateToProject(currentIndex + 1);
-                  }}
-                  disabled={currentIndex === projects.length - 1}
-                  className="fixed right-2 md:right-10 lg:right-72 top-1/2 -translate-y-1/2 z-[60] w-12 h-12 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md transition-all duration-200 disabled:opacity-0 disabled:cursor-not-allowed group border border-white/10"
-                  aria-label="Next project"
-                  title="→ Next project"
-                >
-                  <svg
-                    className="w-8 h-8 text-white group-hover:translate-x-1 transition-transform duration-200"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
 
             {/* Project Image Carousel */}
             <div
@@ -582,7 +586,8 @@ const ProjectModal = ({
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 

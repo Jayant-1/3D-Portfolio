@@ -252,7 +252,7 @@ const Computers = ({ isMobile, onInteract }) => {
     <group
       ref={modelRef}
       position={isMobile ? [0, -2.2, 0] : [0, -3.25, -1.5]}
-      scale={isMobile ? 0.44 : 0.75}
+      scale={isMobile ? 0.47 : 0.80}
       rotation={[-0.01, -0.2, -0.1]}
     >
       <hemisphereLight intensity={isMobile ? 0.35 : 0.2} groundColor='black' />
