@@ -24,8 +24,8 @@ const App = () => {
         <Preloader>
           <BrowserRouter>
             <div
-              className="relative z-0"
-              style={{ backgroundColor: "hsl(222.2 84% 4.9%)" }}
+              className="relative z-0 bg-[#050816]"
+              style={{ backgroundColor: "#050816" }}
             >
               <ElasticCursor />
               <EasterEggs />

@@ -42,7 +42,7 @@ const StarsCanvas = () => {
   }, []);
 
   return (
-    <div className='w-full h-full absolute inset-0 z-[-1] pointer-events-none'>
+    <div className='w-full h-screen fixed inset-0 z-[-1] pointer-events-none overflow-hidden'>
       <Canvas
         camera={{ position: [0, 0, 1] }}
         dpr={[1, isMobile ? 1 : 1.5]}

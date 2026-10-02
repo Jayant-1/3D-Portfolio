@@ -8,7 +8,7 @@
   padding-bottom: 30px;
   position: fixed;
   z-index: 99;
-  background-color: hsl(222.2 84% 4.9%);
+  background-color: #050816;
 }
 
 .introduction svg {
@@ -19,7 +19,7 @@
 }
 
 .introduction svg path {
-  fill: hsl(222.2 84% 4.9%);
+  fill: #050816;
 }
 
 .introduction p {

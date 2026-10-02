@@ -78,28 +78,30 @@ const ComputersCanvas = () => {
   }, []);
 
   return (
-    <Canvas
-      frameloop='demand'
-      shadows={!isMobile}
-      dpr={[1, isMobile ? 1.3 : 2]}
-      camera={{ position: [20, 3, 5], fov: 25 }}
-      gl={{ preserveDrawingBuffer: true, powerPreference: "high-performance" }}
-      style={{ touchAction: "pan-y" }}
-    >
-      <Suspense fallback={<CanvasLoader />}>
-        <EnableContextMenu />
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          rotateSpeed={isMobile ? 0.7 : 1}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
-        <Computers isMobile={isMobile} />
-      </Suspense>
+    <div className={`w-full h-full ${isMobile ? "pointer-events-none" : ""}`}>
+      <Canvas
+        frameloop='demand'
+        shadows={!isMobile}
+        dpr={[1, isMobile ? 1.2 : 2]}
+        camera={{ position: [20, 3, 5], fov: 25 }}
+        gl={{ preserveDrawingBuffer: true, powerPreference: isMobile ? "low-power" : "high-performance" }}
+        style={{ touchAction: "pan-y" }}
+      >
+        <Suspense fallback={<CanvasLoader />}>
+          <EnableContextMenu />
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            enableRotate={!isMobile}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 2}
+          />
+          <Computers isMobile={isMobile} />
+        </Suspense>
 
-      <Preload all />
-    </Canvas>
+        <Preload all />
+      </Canvas>
+    </div>
   );
 };
 

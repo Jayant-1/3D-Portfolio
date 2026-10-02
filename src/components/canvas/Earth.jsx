@@ -52,33 +52,36 @@ const EarthCanvas = () => {
   }, []);
 
   return (
-    <Canvas
-      shadows={!isMobile}
-      frameloop='demand'
-      dpr={[1, isMobile ? 1.3 : 2]}
-      gl={{ preserveDrawingBuffer: true, powerPreference: "high-performance" }}
-      camera={{
-        fov: 45,
-        near: 0.1,
-        far: 200,
-        position: [-4, 3, 6],
-      }}
-      style={{ touchAction: "pan-y" }}
-    >
-      <Suspense fallback={<CanvasLoader />}>
-        <EnableContextMenu />
-        <OrbitControls
-          autoRotate
-          enablePan={false}
-          enableZoom={false}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
-        <Earth />
+    <div className={`w-full h-full ${isMobile ? "pointer-events-none" : ""}`}>
+      <Canvas
+        shadows={!isMobile}
+        frameloop='demand'
+        dpr={[1, isMobile ? 1.2 : 2]}
+        gl={{ preserveDrawingBuffer: true, powerPreference: isMobile ? "low-power" : "high-performance" }}
+        camera={{
+          fov: 45,
+          near: 0.1,
+          far: 200,
+          position: [-4, 3, 6],
+        }}
+        style={{ touchAction: "pan-y" }}
+      >
+        <Suspense fallback={<CanvasLoader />}>
+          <EnableContextMenu />
+          <OrbitControls
+            autoRotate
+            enablePan={false}
+            enableZoom={false}
+            enableRotate={!isMobile}
+            maxPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 2}
+          />
+          <Earth />
 
-        <Preload all />
-      </Suspense>
-    </Canvas>
+          <Preload all />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
 

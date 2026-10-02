@@ -26,6 +26,19 @@
   color-scheme: dark;
 }
 
+html,
+body,
+#root {
+  background-color: #050816 !important;
+  color: #ffffff;
+  min-height: 100%;
+}
+
+.bg-hero-pattern {
+  background-image: url("./assets/herobg.png");
+  background-color: #050816;
+}
+
 .hash-span {
   margin-top: -100px;
   padding-bottom: 100px;
