@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { github } from "../assets";
 
 const getProjectImages = (project) => {
@@ -20,6 +20,10 @@ const ProjectModal = ({
   previewReady = false,
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const touchStartRef = useRef(null);
+  const touchEndRef = useRef(null);
+  const minSwipeDistance = 45;
+
   const projectKey = project?.name ?? "";
   const images = useMemo(() => getProjectImages(project), [project]);
   const safeImageIndex =
@@ -95,9 +99,6 @@ const ProjectModal = ({
     images.length,
   ]);
 
-  // Early return after all hooks
-  if (!project) return null;
-
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -109,8 +110,6 @@ const ProjectModal = ({
     e.stopPropagation();
   };
 
-  const currentImage = images[safeImageIndex] || project.image;
-
   const nextImage = (e) => {
     if (e) e.stopPropagation();
     setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
@@ -121,28 +120,31 @@ const ProjectModal = ({
     setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
   };
 
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-  const minSwipeDistance = 45;
-
   const handleTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    touchEndRef.current = null;
+    touchStartRef.current = e.targetTouches[0].clientX;
   };
 
   const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    touchEndRef.current = e.targetTouches[0].clientX;
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
+    if (touchStartRef.current === null || touchEndRef.current === null) return;
+    const distance = touchStartRef.current - touchEndRef.current;
     if (distance > minSwipeDistance) {
       nextImage();
     } else if (distance < -minSwipeDistance) {
       prevImage();
     }
+    touchStartRef.current = null;
+    touchEndRef.current = null;
   };
+
+  // Early return after all hooks
+  if (!project) return null;
+
+  const currentImage = images[safeImageIndex] || project.image;
 
   return (
     <AnimatePresence>

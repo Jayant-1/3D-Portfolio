@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
@@ -33,10 +33,15 @@ const EnableContextMenu = () => {
   return null;
 };
 
-const Computers = ({ isMobile }) => {
+const Computers = ({ isMobile, onInteract }) => {
   const computer = useGLTF("./desktop_pc/scene_opt.glb");
   const modelRef = useRef();
   const { gl, invalidate } = useThree();
+
+  const introStartTime = useRef(null);
+  const userHasInteracted = useRef(false);
+  const onInteractRef = useRef(onInteract);
+  onInteractRef.current = onInteract;
 
   const centerOffset = useMemo(() => {
     if (!computer?.scene) return { x: 0, y: 0, z: 0 };
@@ -93,6 +98,9 @@ const Computers = ({ isMobile }) => {
       }
 
       if (state.direction === "horizontal") {
+        userHasInteracted.current = true;
+        onInteract?.();
+
         // User is interacting horizontally with the 3D PC model
         if (e.cancelable) e.preventDefault();
 
@@ -118,35 +126,42 @@ const Computers = ({ isMobile }) => {
       state.lastTime = performance.now();
     };
 
-    let isMouseDown = false;
-    const handleMouseDown = (e) => {
-      isMouseDown = true;
-      const state = touchState.current;
-      state.startX = e.clientX;
-      state.lastX = e.clientX;
-      state.lastTime = performance.now();
-      state.velocity = 0;
-      state.isDragging = true;
+    let isPointerDragging = false;
+    let pointerStartX = 0;
+    let pointerLastX = 0;
+    let pointerLastTime = 0;
+
+    const handlePointerDown = (e) => {
+      if (e.pointerType === "touch" && !e.isPrimary) return;
+      isPointerDragging = true;
+      pointerStartX = e.clientX;
+      pointerLastX = e.clientX;
+      pointerLastTime = performance.now();
+      touchState.current.velocity = 0;
     };
 
-    const handleMouseMove = (e) => {
-      if (!isMouseDown) return;
-      const state = touchState.current;
+    const handlePointerMove = (e) => {
+      if (!isPointerDragging) return;
+      const dx = e.clientX - pointerStartX;
+      if (Math.abs(dx) > 5) {
+        userHasInteracted.current = true;
+        onInteract?.();
+      }
+
       const now = performance.now();
-      const dt = Math.max(now - state.lastTime, 1);
-      const moveX = e.clientX - state.lastX;
+      const dt = Math.max(now - pointerLastTime, 1);
+      const moveX = e.clientX - pointerLastX;
 
-      state.velocity = (moveX / dt) * 0.015;
-      state.targetRotation = Math.max(-1.4, Math.min(1.0, state.targetRotation + moveX * 0.007));
+      touchState.current.velocity = (moveX / dt) * 0.015;
+      touchState.current.targetRotation = Math.max(-1.4, Math.min(1.0, touchState.current.targetRotation + moveX * 0.007));
 
-      state.lastX = e.clientX;
-      state.lastTime = now;
+      pointerLastX = e.clientX;
+      pointerLastTime = now;
       invalidate();
     };
 
-    const handleMouseUp = () => {
-      isMouseDown = false;
-      touchState.current.isDragging = false;
+    const handlePointerUp = () => {
+      isPointerDragging = false;
       touchState.current.lastTime = performance.now();
     };
 
@@ -155,9 +170,10 @@ const Computers = ({ isMobile }) => {
     domElement.addEventListener("touchend", handleTouchEnd, { passive: true });
     domElement.addEventListener("touchcancel", handleTouchEnd, { passive: true });
 
-    domElement.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    domElement.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
 
     return () => {
       domElement.removeEventListener("touchstart", handleTouchStart);
@@ -165,14 +181,32 @@ const Computers = ({ isMobile }) => {
       domElement.removeEventListener("touchend", handleTouchEnd);
       domElement.removeEventListener("touchcancel", handleTouchEnd);
 
-      domElement.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      domElement.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
     };
-  }, [gl, isMobile, invalidate]);
+  }, [gl, isMobile, invalidate, onInteract]);
 
   useFrame((state, delta) => {
     const ts = touchState.current;
+    if (ts.isDragging) {
+      userHasInteracted.current = true;
+    }
+
+    if (introStartTime.current === null) {
+      introStartTime.current = state.clock.elapsedTime;
+    }
+
+    // Intro showcase turn in first 3 seconds if untouched
+    let introWiggle = 0;
+    if (!userHasInteracted.current) {
+      const elapsed = state.clock.elapsedTime - introStartTime.current;
+      if (elapsed < 3.0) {
+        const p = elapsed / 3.0;
+        introWiggle = Math.sin(p * Math.PI * 2) * 0.22 * Math.cos(p * Math.PI * 0.5);
+      }
+    }
 
     // Apply inertia, damping, and gentle auto-centering on mobile
     if (isMobile) {
@@ -204,7 +238,7 @@ const Computers = ({ isMobile }) => {
 
     if (modelRef.current) {
       if (isMobile) {
-        modelRef.current.rotation.y = ts.currentRotation;
+        modelRef.current.rotation.y = ts.currentRotation + introWiggle;
         modelRef.current.position.y = basePosY + idleFloat;
         modelRef.current.rotation.z = -0.1 + idleTilt;
       } else {
@@ -218,7 +252,7 @@ const Computers = ({ isMobile }) => {
     <group
       ref={modelRef}
       position={isMobile ? [0, -2.2, 0] : [0, -3.25, -1.5]}
-      scale={isMobile ? 0.40 : 0.75}
+      scale={isMobile ? 0.44 : 0.75}
       rotation={[-0.01, -0.2, -0.1]}
     >
       <hemisphereLight intensity={isMobile ? 0.35 : 0.2} groundColor='black' />
@@ -241,7 +275,13 @@ const Computers = ({ isMobile }) => {
 };
 
 const ComputersCanvas = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(max-width: 768px)").matches;
+    }
+    return false;
+  });
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     // Add a listener for changes to screen size (phones & tablets)
@@ -260,8 +300,15 @@ const ComputersCanvas = () => {
     };
   }, []);
 
+  const handleUserInteract = () => {
+    setHasInteracted(true);
+  };
+
   return (
-    <div className="w-full h-full relative" style={{ touchAction: "pan-y" }}>
+    <div
+      className="w-full h-full relative cursor-grab active:cursor-grabbing"
+      style={{ touchAction: "pan-y" }}
+    >
       <Canvas
         frameloop="always"
         shadows={!isMobile}
@@ -278,13 +325,40 @@ const ComputersCanvas = () => {
               enablePan={false}
               maxPolarAngle={Math.PI / 2}
               minPolarAngle={Math.PI / 2}
+              onStart={handleUserInteract}
             />
           )}
-          <Computers isMobile={isMobile} />
+          <Computers isMobile={isMobile} onInteract={handleUserInteract} />
         </Suspense>
 
         <Preload all />
       </Canvas>
+
+      {/* Interactive 3D Hint Badge */}
+      <div
+        className={`absolute bottom-8 sm:bottom-6 left-1/2 -translate-x-1/2 z-10 pointer-events-none transition-all duration-700 ease-out select-none ${
+          hasInteracted ? "opacity-0 translate-y-3 pointer-events-none" : "opacity-100 translate-y-0"
+        }`}
+      >
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#101328]/80 backdrop-blur-sm border border-white/15 text-[11px] sm:text-xs text-white/85 font-medium">
+          <svg
+            className="w-3.5 h-3.5 text-secondary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+            />
+          </svg>
+          <span className="tracking-wide text-white/80">
+            {isMobile ? "Swipe to rotate 3D" : "Drag to rotate 3D"}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
