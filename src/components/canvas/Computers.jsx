@@ -92,7 +92,7 @@ const Computers = ({ isMobile }) => {
         const moveX = t.clientX - state.lastX;
 
         state.velocity = (moveX / dt) * 0.015;
-        state.targetRotation += moveX * 0.007;
+        state.targetRotation = Math.max(-1.4, Math.min(1.0, state.targetRotation + moveX * 0.007));
 
         state.lastX = t.clientX;
         state.lastTime = now;
@@ -106,6 +106,39 @@ const Computers = ({ isMobile }) => {
       const state = touchState.current;
       state.isDragging = false;
       state.direction = null;
+      state.lastTime = performance.now();
+    };
+
+    let isMouseDown = false;
+    const handleMouseDown = (e) => {
+      isMouseDown = true;
+      const state = touchState.current;
+      state.startX = e.clientX;
+      state.lastX = e.clientX;
+      state.lastTime = performance.now();
+      state.velocity = 0;
+      state.isDragging = true;
+    };
+
+    const handleMouseMove = (e) => {
+      if (!isMouseDown) return;
+      const state = touchState.current;
+      const now = performance.now();
+      const dt = Math.max(now - state.lastTime, 1);
+      const moveX = e.clientX - state.lastX;
+
+      state.velocity = (moveX / dt) * 0.015;
+      state.targetRotation = Math.max(-1.4, Math.min(1.0, state.targetRotation + moveX * 0.007));
+
+      state.lastX = e.clientX;
+      state.lastTime = now;
+      invalidate();
+    };
+
+    const handleMouseUp = () => {
+      isMouseDown = false;
+      touchState.current.isDragging = false;
+      touchState.current.lastTime = performance.now();
     };
 
     domElement.addEventListener("touchstart", handleTouchStart, { passive: true });
@@ -113,27 +146,43 @@ const Computers = ({ isMobile }) => {
     domElement.addEventListener("touchend", handleTouchEnd, { passive: true });
     domElement.addEventListener("touchcancel", handleTouchEnd, { passive: true });
 
+    domElement.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
     return () => {
       domElement.removeEventListener("touchstart", handleTouchStart);
       domElement.removeEventListener("touchmove", handleTouchMove);
       domElement.removeEventListener("touchend", handleTouchEnd);
       domElement.removeEventListener("touchcancel", handleTouchEnd);
+
+      domElement.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [gl, isMobile, invalidate]);
 
   useFrame((state, delta) => {
     const ts = touchState.current;
 
-    // Apply inertia and damping on mobile
+    // Apply inertia, damping, and gentle auto-centering on mobile
     if (isMobile) {
-      if (!ts.isDragging && Math.abs(ts.velocity) > 0.0001) {
-        ts.targetRotation += ts.velocity * delta * 60;
-        ts.velocity *= 0.92;
-        invalidate();
+      const now = performance.now();
+      if (!ts.isDragging) {
+        if (Math.abs(ts.velocity) > 0.0001) {
+          ts.targetRotation += ts.velocity * delta * 60;
+          ts.velocity *= 0.90;
+          ts.targetRotation = Math.max(-1.4, Math.min(1.0, ts.targetRotation));
+          invalidate();
+        } else if (now - ts.lastTime > 2500) {
+          // Gently return towards front-facing view after 2.5s of inactivity
+          ts.targetRotation += (-0.2 - ts.targetRotation) * Math.min(delta * 1.5, 1);
+          invalidate();
+        }
       }
 
       if (Math.abs(ts.currentRotation - ts.targetRotation) > 0.0005) {
-        ts.currentRotation += (ts.targetRotation - ts.currentRotation) * Math.min(delta * 12, 1);
+        ts.currentRotation += (ts.targetRotation - ts.currentRotation) * Math.min(delta * 10, 1);
         invalidate();
       }
     }
@@ -142,20 +191,27 @@ const Computers = ({ isMobile }) => {
     const idleFloat = Math.sin(state.clock.elapsedTime * 1.5) * 0.04;
     const idleTilt = Math.sin(state.clock.elapsedTime * 1.0) * 0.015;
 
+    const basePosY = isMobile ? -2.2 : -3.25;
+
     if (modelRef.current) {
       if (isMobile) {
         modelRef.current.rotation.y = ts.currentRotation;
-        modelRef.current.position.y = -3.15 + idleFloat;
+        modelRef.current.position.y = basePosY + idleFloat;
         modelRef.current.rotation.z = -0.1 + idleTilt;
       } else {
-        modelRef.current.position.y = -3.80 + idleFloat;
+        modelRef.current.position.y = basePosY + idleFloat;
         modelRef.current.rotation.z = -0.1 + idleTilt;
       }
     }
   });
 
   return (
-    <group ref={modelRef}>
+    <group
+      ref={modelRef}
+      position={isMobile ? [0, -2.2, -1.8] : [0, -3.25, -1.5]}
+      scale={isMobile ? 0.46 : 0.75}
+      rotation={[-0.01, -0.2, -0.1]}
+    >
       <hemisphereLight intensity={isMobile ? 0.35 : 0.2} groundColor='black' />
       <spotLight
         position={[-20, 50, 10]}
@@ -168,9 +224,8 @@ const Computers = ({ isMobile }) => {
       <pointLight intensity={isMobile ? 1.2 : 1} />
       <primitive
         object={computer.scene}
-        scale={isMobile ? 0.58 : 0.75}
-        position={isMobile ? [0, -3.15, -2.1] : [0, -3.80, -1.5]}
-        rotation={[-0.00, -0.2, -0.1]}
+        position={[0, 0, 0]}
+        rotation={[0, 0, 0]}
       />
     </group>
   );
@@ -199,7 +254,7 @@ const ComputersCanvas = () => {
   return (
     <div className="w-full h-full relative" style={{ touchAction: "pan-y" }}>
       <Canvas
-        frameloop={isMobile ? "always" : "demand"}
+        frameloop="always"
         shadows={!isMobile}
         dpr={[1, isMobile ? 1.2 : 2]}
         camera={{ position: [20, 3, 5], fov: 25 }}

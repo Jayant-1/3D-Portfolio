@@ -85,12 +85,12 @@ const Hero = () => {
 
       <ComputersCanvas />
 
-      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center">
-        <a href="#about">
-          <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
+      <div className="absolute xs:bottom-10 bottom-5 w-full flex justify-center items-center pointer-events-none z-10">
+        <a href="#about" className="pointer-events-auto">
+          <div className="w-[32px] h-[56px] xs:w-[35px] xs:h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
             <motion.div
               animate={{
-                y: [0, 24, 0],
+                y: [0, 20, 0],
               }}
               transition={{
                 duration: 1.5,
