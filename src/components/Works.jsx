@@ -99,6 +99,7 @@ const ProjectCard = ({ index, name, image, source_code_link, onOpenModal }) => {
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.4 }}
             className="mb-2 opacity-0 group-hover:opacity-100 transition-all duration-400"
           >
