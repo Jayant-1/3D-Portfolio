@@ -41,7 +41,7 @@ const Hero = () => {
     return () => clearInterval(typingInterval);
   }, [charIndex, itemIndex]);
   return (
-    <section className={`relative w-full h-screen mx-auto`} id="hero">
+    <section className={`relative w-full h-[75vh] sm:h-screen mx-auto`} id="hero">
       <div
         className={`absolute inset-0 top-[90px] sm:top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-3 sm:gap-5 pointer-events-none`}
       >
