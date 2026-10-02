@@ -252,7 +252,7 @@ const Contact = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="p-2.5 rounded-lg bg-white/5 hover:bg-white/15 text-[#8ec5ff] transition-colors"
+                  className="p-2.5 rounded-lg bg-white/5 hover:bg-white/15 text-[#0962bd] transition-colors"
                 >
                   <FaLinkedin size={16} />
                 </a>
