@@ -21,7 +21,7 @@ export const usePreloader = () => {
   return context;
 };
 
-const LOADING_TIME = 2.5;
+const LOADING_TIME = 1.0;
 
 function Preloader({ children, disabled = false }) {
   const [isLoading, setIsLoading] = useState(true);
