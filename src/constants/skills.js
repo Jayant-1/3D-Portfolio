@@ -5,24 +5,30 @@ export const SkillNames = {
   HTML: "html",
   CSS: "css",
   REACT: "react",
-  VUE: "vue",
   NEXTJS: "nextjs",
   TAILWIND: "tailwind",
   NODEJS: "nodejs",
   EXPRESS: "express",
+  PYTHON: "python",
+  FLASK: "flask",
+  JAVA: "java",
+  SPRING: "spring",
+  SPRINGBOOT: "springboot",
+  RUST: "rust",
   POSTGRES: "postgres",
+  MYSQL: "mysql",
+  SQLITE: "sqlite",
   MONGODB: "mongodb",
+  REDIS: "redis",
+  RESTAPI: "restapi",
+  WEBSOCKET: "websocket",
   GIT: "git",
   GITHUB: "github",
-  PRETTIER: "prettier",
   NPM: "npm",
-  FIREBASE: "firebase",
-  WORDPRESS: "wordpress",
   LINUX: "linux",
   DOCKER: "docker",
   NGINX: "nginx",
   AWS: "aws",
-  VIM: "vim",
   VERCEL: "vercel",
 };
 
@@ -75,17 +81,8 @@ export const SKILLS = {
     color: "#61dafb",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
   },
-  vue: {
-    id: 6,
-    name: "vue",
-    label: "Vue",
-    shortDescription:
-      "A progressive JavaScript framework for building user interfaces with a simple and flexible API.",
-    color: "#41b883",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
-  },
   nextjs: {
-    id: 7,
+    id: 6,
     name: "nextjs",
     label: "Next.js",
     shortDescription:
@@ -94,7 +91,7 @@ export const SKILLS = {
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
   },
   tailwind: {
-    id: 8,
+    id: 7,
     name: "tailwind",
     label: "Tailwind",
     shortDescription:
@@ -103,7 +100,7 @@ export const SKILLS = {
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg",
   },
   nodejs: {
-    id: 9,
+    id: 8,
     name: "nodejs",
     label: "Node.js",
     shortDescription:
@@ -112,7 +109,7 @@ export const SKILLS = {
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
   },
   express: {
-    id: 10,
+    id: 9,
     name: "express",
     label: "Express",
     shortDescription:
@@ -120,26 +117,125 @@ export const SKILLS = {
     color: "#fff",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
   },
-  postgres: {
+  python: {
+    id: 10,
+    name: "python",
+    label: "Python",
+    shortDescription:
+      "A versatile, high-level programming language known for clean syntax, AI/ML, and scalable backend engineering.",
+    color: "#3776ab",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  },
+  flask: {
     id: 11,
+    name: "flask",
+    label: "Flask",
+    shortDescription:
+      "A lightweight Python WSGI micro web framework designed for fast development of APIs and web applications.",
+    color: "#ffffff",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg",
+  },
+  java: {
+    id: 12,
+    name: "java",
+    label: "Java",
+    shortDescription:
+      "A proven, object-oriented language engineered for high-performance server-side systems and enterprise software.",
+    color: "#ea2d2e",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+  },
+  spring: {
+    id: 13,
+    name: "spring",
+    label: "Java Spring",
+    shortDescription:
+      "A powerful enterprise Java framework providing comprehensive infrastructure support for building modern backend applications.",
+    color: "#6db33f",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg",
+  },
+  springboot: {
+    id: 14,
+    name: "springboot",
+    label: "Spring Boot",
+    shortDescription:
+      "An enterprise framework that simplifies Spring development with auto-configuration and stand-alone production microservices.",
+    color: "#6db33f",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg",
+  },
+  rust: {
+    id: 15,
+    name: "rust",
+    label: "Rust",
+    shortDescription:
+      "A blazingly fast and memory-efficient systems programming language with zero-cost abstractions and memory safety.",
+    color: "#dea584",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg",
+  },
+  postgres: {
+    id: 16,
     name: "postgres",
     label: "PostgreSQL",
     shortDescription:
-      "A powerful open-source relational database system known for reliability and feature-richness.",
+      "A powerful open-source relational database system known for reliability, SQL compliance, and advanced concurrency.",
     color: "#336791",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
   },
+  mysql: {
+    id: 17,
+    name: "mysql",
+    label: "MySQL",
+    shortDescription:
+      "A popular open-source relational database management system delivering high reliability, speed, and wide ecosystem support.",
+    color: "#4479a1",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+  },
+  sqlite: {
+    id: 18,
+    name: "sqlite",
+    label: "SQLite",
+    shortDescription:
+      "A self-contained, serverless, zero-configuration SQL database engine widely used in embedded systems and applications.",
+    color: "#003b57",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg",
+  },
   mongodb: {
-    id: 12,
+    id: 19,
     name: "mongodb",
     label: "MongoDB",
     shortDescription:
-      "A NoSQL database that stores data in flexible, JSON-like documents.",
-    color: "#336791",
+      "A document-oriented NoSQL database that stores data in flexible, JSON-like documents with dynamic schemas.",
+    color: "#47a248",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
   },
+  redis: {
+    id: 20,
+    name: "redis",
+    label: "Redis",
+    shortDescription:
+      "An in-memory data store used as a high-speed distributed cache, message broker, and real-time database.",
+    color: "#dc382d",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg",
+  },
+  restapi: {
+    id: 21,
+    name: "restapi",
+    label: "RESTful API",
+    shortDescription:
+      "Stateless HTTP client-server architecture for scalable, decoupled web services and API endpoints.",
+    color: "#ff6c37",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg",
+  },
+  websocket: {
+    id: 22,
+    name: "websocket",
+    label: "WebSocket",
+    shortDescription:
+      "Full-duplex, real-time communication protocol enabling bidirectional event-driven connections between client and server.",
+    color: "#010101",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg",
+  },
   git: {
-    id: 13,
+    id: 23,
     name: "git",
     label: "Git",
     shortDescription:
@@ -148,102 +244,66 @@ export const SKILLS = {
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
   },
   github: {
-    id: 14,
+    id: 24,
     name: "github",
     label: "GitHub",
     shortDescription:
-      "A platform to host, manage, and collaborate on code using Git.",
-    color: "#000000",
+      "A cloud platform to host, manage, review, and collaborate on code using Git repositories.",
+    color: "#ffffff",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
   },
-  prettier: {
-    id: 15,
-    name: "prettier",
-    label: "Prettier",
-    shortDescription:
-      "A code formatter that automatically styles code to follow consistent rules.",
-    color: "#f7b93a",
-    icon: "https://cdn.simpleicons.org/prettier/f7b93a",
-  },
   npm: {
-    id: 16,
+    id: 25,
     name: "npm",
     label: "NPM",
     shortDescription:
       "The package manager for JavaScript, used to install libraries and manage project dependencies.",
-    color: "#fff",
+    color: "#cb3837",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg",
   },
-  firebase: {
-    id: 17,
-    name: "firebase",
-    label: "Firebase",
-    shortDescription:
-      "A platform by Google offering backend services like authentication, database, and hosting.",
-    color: "#ffca28",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
-  },
-  wordpress: {
-    id: 18,
-    name: "wordpress",
-    label: "WordPress",
-    shortDescription:
-      "A content management system (CMS) used to build and manage websites easily.",
-    color: "#007acc",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg",
-  },
   linux: {
-    id: 19,
+    id: 26,
     name: "linux",
     label: "Linux",
     shortDescription:
-      "An open-source operating system widely used in servers, development, and cloud environments.",
-    color: "#fff",
+      "An open-source operating system widely used in production servers, cloud infrastructure, and developer workstations.",
+    color: "#fcc624",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
   },
   docker: {
-    id: 20,
+    id: 27,
     name: "docker",
     label: "Docker",
     shortDescription:
-      "A platform for developing, shipping, and running applications in isolated containers.",
+      "A containerization platform for packaging applications and dependencies into standardized lightweight containers.",
     color: "#2496ed",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
   },
   nginx: {
-    id: 21,
+    id: 28,
     name: "nginx",
     label: "NginX",
     shortDescription:
-      "A high-performance web server and reverse proxy used for serving static content and load balancing.",
-    color: "#008000",
+      "A high-performance web server, reverse proxy, and load balancer designed for maximum concurrency and speed.",
+    color: "#009639",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg",
   },
   aws: {
-    id: 22,
+    id: 29,
     name: "aws",
     label: "AWS",
     shortDescription:
-      "Amazon Web Services — a cloud platform offering scalable computing, storage, and services.",
+      "Amazon Web Services — comprehensive cloud computing platform offering scalable computing, storage, and networking.",
     color: "#ff9900",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aws/aws-original.svg",
   },
-  vim: {
-    id: 23,
-    name: "vim",
-    label: "Vim",
-    shortDescription:
-      "A highly configurable, efficient text editor popular among developers and system administrators.",
-    color: "#e34c26",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vim/vim-original.svg",
-  },
   vercel: {
-    id: 24,
+    id: 30,
     name: "vercel",
     label: "Vercel",
     shortDescription:
-      "A cloud platform for deploying frontend applications, especially optimized for Next.js.",
-    color: "#6cc24a",
+      "A cloud platform for deploying frontend applications, especially optimized for Next.js, static sites, and edge functions.",
+    color: "#ffffff",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg",
   },
 };

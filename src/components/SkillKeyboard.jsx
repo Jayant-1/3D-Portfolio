@@ -130,7 +130,7 @@ const SkillKeyboard = () => {
       // Otherwise, set the selected skill based on the key name
       if (!selectedSkill || selectedSkill.name !== e.target.name) {
         const skill = SKILLS[e.target.name];
-        setSelectedSkill(skill);
+        if (skill) setSelectedSkill(skill);
       }
     }
   };
@@ -272,8 +272,20 @@ const SkillKeyboard = () => {
 
   const CATEGORIES = {
     All: Object.keys(SKILLS),
-    Frontend: ["react", "nextjs", "vue", "js", "ts", "html", "css", "tailwind"],
-    Backend: ["nodejs", "express", "postgres", "mongodb", "firebase"],
+    Frontend: ["react", "nextjs", "js", "ts", "html", "css", "tailwind"],
+    Backend: [
+      "nodejs",
+      "express",
+      "python",
+      "flask",
+      "java",
+      "spring",
+      "springboot",
+      "rust",
+      "restapi",
+      "websocket",
+    ],
+    Database: ["postgres", "mysql", "mongodb", "sqlite", "redis"],
     "DevOps & Tools": [
       "git",
       "github",
