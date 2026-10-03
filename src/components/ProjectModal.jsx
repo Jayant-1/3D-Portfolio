@@ -521,7 +521,8 @@ const ProjectModal = ({
                     onClick={() =>
                       window.open(project.live_demo_link, "_blank")
                     }
-                    className="flex-1 flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                    style={{ backgroundColor: "rgb(88, 80, 236)" }}
+                    className="flex-1 flex items-center justify-center gap-3 px-6 py-3 hover:brightness-110 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[rgba(88,80,236,0.35)] hover:shadow-xl hover:shadow-[rgba(88,80,236,0.5)] hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <svg
                       className="w-5 h-5"

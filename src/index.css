@@ -134,11 +134,11 @@ body,
 }
 
 .violet-gradient {
-  background: #804dee;
-  background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
+  background: #5850ec;
+  background: linear-gradient(-90deg, #5850ec 0%, rgba(60, 51, 80, 0) 100%);
   background: -webkit-linear-gradient(
     -90deg,
-    #804dee 0%,
+    #5850ec 0%,
     rgba(60, 51, 80, 0) 100%
   );
 }
@@ -376,7 +376,7 @@ body,
     background-repeat: no-repeat !important;
     background-size: 100% 3px !important;
     background-position: 0px 90% !important;
-    color: rgb(145, 94, 255) !important;
+    color: rgb(88, 80, 236) !important;
     display: inline-block !important;
     font-weight: bold !important;
   }

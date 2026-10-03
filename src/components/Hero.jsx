@@ -45,13 +45,13 @@ const Hero = () => {
         className={`absolute inset-0 top-[90px] sm:top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-3 sm:gap-5 pointer-events-none`}
       >
         <div className="flex flex-col justify-center items-center mt-3 sm:mt-5">
-          <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#915EFF]" />
+          <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#5850EC]" />
           <div className="w-1 sm:h-80 h-32 violet-gradient" />
         </div>
 
         <div style={parallaxStyle} className="pointer-events-auto">
           <h1 className={`${styles.heroHeadText} text-white`}>
-            Hi, I'm <span className="text-[#915EFF]">Jayant Potdar</span>
+            Hi, I'm <span className="text-[#5850EC]">Jayant Potdar</span>
           </h1>
           <p className={`${styles.heroSubText} mt-1.5 sm:mt-2 text-white-100`}>
             I'm{" "}
@@ -64,7 +64,7 @@ const Hero = () => {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: isMobile ? "100% 3px" : "100% 8px",
                 backgroundPosition: isMobile ? "0px 90%" : "0 100%",
-                color: "rgb(145, 94, 255)",
+                color: "rgb(88, 80, 236)",
                 display: "inline-block",
                 fontWeight: "bold",
               }}
